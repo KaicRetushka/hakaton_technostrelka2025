@@ -1,6 +1,8 @@
-from fastapi import APIRouter, Response, Form
+from fastapi import APIRouter, Response, Form, Request, Depends, UploadFile, File, HTTPException
 from fastapi.responses import HTMLResponse
+from typing import List
 
+from backend.database import insert_user, check_user, check_admin
 from backend.jwt import config, security
 from backend.pydantic_classes import (BodyRegistration, ReturnAccessToken, BodyEnter, ReturnDetail)
 router = APIRouter()
@@ -32,3 +34,15 @@ async def enter(response: Response, body: BodyEnter = Form(...)) -> ReturnAccess
 async def exit(response: Response) -> ReturnDetail:
     response.delete_cookie(config.JWT_ACCESS_COOKIE_NAME)
     return {"detail": "Вы вышли из аккаунта"}
+
+@router.post("/metka",dependencies=[Depends(security.access_token_required)],
+             tags=["Добавление метки админом"])
+async def metka(request: Request, title: str = Form(...), coordinats: list = Form(...), description: str = Form(...),
+                type: str = Form(...), photos: List[UploadFile] = File(None)):
+    token = request.cookies.get(config.JWT_ACCESS_COOKIE_NAME)
+    _id = security._decode_token(token)
+    data = check_admin(_id)
+    if not(data):
+        return HTTPException(status_code=400, detail="Вы не являеетесь администратором")
+    insert_metka(title, coordinats, description, type, photos)
+    return {"detail": "Метка добавлена"}

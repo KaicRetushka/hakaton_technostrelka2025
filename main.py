@@ -5,8 +5,28 @@ import uvicorn
 
 from backend.router import router
 from backend.router_routing import router_routing
+from backend.database import add_admin
+from pydantic import BaseModel
+# from transformers import pipeline
 
+# Создаем экземпляр FastAPI
 app = FastAPI()
+
+# Загружаем модель для генерации ответов
+# chatbot = pipeline("conversational", model="microsoft/DialoGPT-medium")
+
+
+# Определяем модель для входящих данных
+# class Message(BaseModel):
+#     message: str
+#
+#
+# @app.post("/chat")
+# async def chat(msg: Message):
+#     # Генерируем ответ от бота
+#     response = chatbot(msg.message)
+#     bot_reply = response[0]['generated_text']
+#     return {"reply": bot_reply}
 
 app.mount("/static", StaticFiles(directory="frontend/static"), name="static")
 
@@ -23,4 +43,5 @@ async def jwt_decode_error(request, exc):
 
 
 if __name__ == "__main__":
+    add_admin()
     uvicorn.run("main:app", reload=True)

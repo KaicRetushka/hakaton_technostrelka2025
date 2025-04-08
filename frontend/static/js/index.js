@@ -18,6 +18,45 @@ function exitToTheGlav(event){
 }
 
 
+function myFunc() {
+    var files = photoMark.files || photoMark.currentTarget.files;
+    var reader = [];
+    
+    // Очищаем галерею перед добавлением новых изображений
+    gallery.innerHTML = '';
+
+    for (let i = 0; i < files.length; i++) {
+        let name = 'file' + i; // Уникальное имя для каждого изображения
+        let clas = 'file-class-' + i;
+
+        reader[i] = new FileReader();
+        reader[i].readAsDataURL(files[i]);
+        
+        // Создаем элемент изображения и добавляем его в галерею
+        let imgElement = document.createElement('img');
+        imgElement.id = name;
+        imgElement.src = ''; // Изначально пустой src
+        imgElement.style.width = '100px'
+        imgElement.style.height = '100px'
+        imgElement.style.margin = '15px'
+
+        gallery.appendChild(imgElement); // Добавляем элемент в галерею
+
+        // Устанавливаем обработчик onload
+        reader[i].onload = function (e) {
+            console.log(document.getElementById(name));
+            imgElement.src = e.target.result; // Устанавливаем src для изображения
+        };
+
+        console.log(files[i]);
+    }
+}
+
+photoMark.addEventListener("change", (event) => {
+    myFunc()
+})
+
+
 
 
 ymaps.ready(function () {
@@ -111,37 +150,32 @@ ymaps.ready(function () {
                     {
                         preset: "islands#blackDotIcon"
                     }
-                );
+                )
 
                 placemark.events.add('click', function() {
                     window.location.href = `/metka/${mark.id}`;
-                });
+                })
     
                 myMap.geoObjects.add(placemark);
-            });
+            })
     
         } catch (error) {
             console.error('Ошибка при загрузке меток:', error);
             alert('Ошибка при загрузке меток: ' + error.message);
         }
-    });
+    })
 })
-
-//FETCH-запрос для вывода меток
-
-
-
 
 
 //FETCH-запрос для создания метки 
 
-async function addMark(title, coords, description) {
+async function addMark(title, coords, description){
     try {
 
         let formData = new FormData();
         
         for (let file of photoMark.files) {
-            formData.append('photos', file); // Лучше использовать 'photos[]' для массива
+            formData.append('photos', file)
         }
 
         let response = await fetch(`http://127.0.0.1:8000/metka/?title=${title}&x_coor=${coords[0]}&y_coor=${coords[1]}&description=${description}`, {
@@ -153,6 +187,6 @@ async function addMark(title, coords, description) {
         console.log('response: ', response)
 
     } catch {
-
+        alert('Что-то пошлое не так')
     }          
 }

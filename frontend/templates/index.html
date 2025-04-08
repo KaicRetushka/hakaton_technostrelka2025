@@ -57,11 +57,16 @@
             <input id="description_mark_input" type="text">
         </div>
 
-        <div>
-            <p>Фотографии</p>
-            <label for="photo_mark_input">Добавить фотографии</label>
-            <input id="photo_mark_input" type="file" multiple>
+        <label class="file-input" for="photo_mark_input">Добавить фото</label>
+        <div id="not_galary" class="custom-file-input">
+            <div id="gallery">
+
+            </div>
+            <input id="photo_mark_input" class="file-upload-btn" type="file" multiple><br>
         </div>
+
+
+
 
         <div>
             <button id="add_mark_cancel">Отменить</button>

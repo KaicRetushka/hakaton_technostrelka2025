@@ -54,8 +54,7 @@ ymaps.ready(function () {
             const placemark = new ymaps.Placemark(
                 coords,
                 {
-                    hintContent: nameMark.value,
-                    balloonContent: `Координаты: ${coords}`
+                    hintContent: nameMark.value
                 },
                 {
                     preset: "islands#blackDotIcon"
@@ -79,18 +78,54 @@ ymaps.ready(function () {
             isAddingMode = false
             btnAddMark.textContent = "Добавить метку"
             dialogAddMark.close()
-        };
-    });
+        }
+    })
 
     showMark.addEventListener('click', async () => {
-        let response = await fetch('http://127.0.0.1:8000', {
-            headers: {'Content-Type': 'application/json'}
-        })
+        try {
+            myMap.geoObjects.removeAll();
     
-        response = await response.json()
-        console.log('Показ меток: ', response)
-    })
-});
+            let response = await fetch('http://127.0.0.1:8000/metki', {
+                headers: {'Content-Type': 'application/json'}
+            });
+    
+            if (!response.ok) {
+                throw new Error(`Ошибка HTTP: ${response.status}`);
+            }
+    
+            const marks = await response.json();
+            console.log('Полученные метки:', marks);
+    
+            // Проверяем, что marks - массив
+            if (!Array.isArray(marks)) {
+                throw new Error('Ожидался массив меток');
+            }
+     
+            marks.forEach(mark => {
+    
+                const placemark = new ymaps.Placemark(
+                    [mark.x_coor, mark.y_coor],
+                    {
+                        hintContent: mark.title || 'Без названия'
+                    },
+                    {
+                        preset: "islands#blackDotIcon"
+                    }
+                );
+
+                placemark.events.add('click', function() {
+                    window.location.href = `/metka/${mark.id}`;
+                });
+    
+                myMap.geoObjects.add(placemark);
+            });
+    
+        } catch (error) {
+            console.error('Ошибка при загрузке меток:', error);
+            alert('Ошибка при загрузке меток: ' + error.message);
+        }
+    });
+})
 
 //FETCH-запрос для вывода меток
 

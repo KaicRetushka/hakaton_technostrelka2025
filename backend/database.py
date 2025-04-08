@@ -57,7 +57,10 @@ def select_metka_info(id):
     summa_star = 0
     for review in metka_info["review_arr"]:
         summa_star += review["stars"]
-    avg_star = summa_star / len(metka_info["review_arr"])
+    if len(metka_info["review_arr"]) == 0:
+        avg_star = 0
+    else:
+        avg_star = summa_star / len(metka_info["review_arr"])
     return {"id": str(metka_info["_id"]), "title": metka_info["title"], "x_coor": metka_info["x_coor"],
             "y_coor": metka_info["y_coor"], "description": metka_info["description"],
             "photos": metka_info["photos"], "review_arr": metka_info["review_arr"], "avg_star": avg_star}

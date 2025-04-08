@@ -8,8 +8,7 @@ templates = Jinja2Templates(directory="frontend/templates")
 
 router_routing = APIRouter()
 
-@router_routing.get("/", tags=["""Получение главной страницы, is_reg, is_admin, fullname.
-metka_info{id, title, x_coor, y_coor, description, photos, review_arr, avg_star}"""])
+@router_routing.get("/", tags=["""Получение главной страницы, is_reg, is_admin, fullname."""])
 async def give_index(request: Request):
     token = request.cookies.get(config.JWT_ACCESS_COOKIE_NAME)
     is_reg = False
@@ -32,7 +31,7 @@ async def give_lead_str(request: Request):
 async def give_lead_str(request: Request):
     return templates.TemplateResponse("vhod.html", {"request": request})
 
-@router_routing.get("/metka/{id}", tags=["Получение всей информации о метке"])
+@router_routing.get("/metka/{id}", tags=["Получение всей информации о метке metka_info{id, title, x_coor, y_coor, description, photos, review_arr, avg_star}"])
 async def get_metka_id(request: Request, id: str):
     try:
         token = request.cookies.get(config.JWT_ACCESS_COOKIE_NAME)

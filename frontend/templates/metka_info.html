@@ -15,14 +15,24 @@
 
     {% if is_admin%}
 
-        <div hidden>
-            <p>Название ориг</p>
-            <input id="info_title_orig" value="{{ metka_info.title }}"></input>
-        </div>
+    <div hidden>
+        <p>Название ориг</p>
+        <input id="info_title_orig" value="{{ metka_info.title }}"></input>
+    </div>
 
         <div hidden>
             <p>id</p>
             <input id="info_id" value="{{ metka_info.id }}"></input>
+        </div>
+
+        <div hidden>
+            <p>x_coor</p>
+            <input id="info_x_coor" value="{{ metka_info.x_coor }}"></input>
+        </div>
+
+        <div hidden>
+            <p>y_coor</p>
+            <input id="info_y_coor" value="{{ metka_info.y_coor }}"></input>
         </div>
 
         <div id="cancel_change" hidden>
@@ -85,16 +95,6 @@
         <br><button id="backToGlav" onclick="location.href='/'">Назад</button>
 
     {% endif %}
-
-    <div hidden>
-        <p>x_coor</p>
-        <input id="info_x_coor" value="{{ metka_info.x_coor }}"></input>
-    </div>
-
-    <div hidden>
-        <p>y_coor</p>
-        <input id="info_y_coor" value="{{ metka_info.y_coor }}"></input>
-    </div>
 
     
 

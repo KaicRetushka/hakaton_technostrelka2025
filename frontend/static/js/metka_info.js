@@ -3,29 +3,14 @@ const gallery = document.querySelector('#gallery')
 let saveChange = document.querySelector('#saveChange')
 const formData = new FormData()
 let myMap
-
-if(document.querySelector('#info_id') 
-    &&document.querySelector('#info_title')
-    &&document.querySelector('#info_title_orig')
-    &&document.querySelector('#info_description')
-    &&document.querySelector('#info_title')
-){
-    let id = document.querySelector('#info_id').value
-    let title = document.querySelector('#info_title').value
-    let title_orig = document.querySelector('#info_title_orig').value
-    let description = document.querySelector('#info_description').value
-}
-
+let id = document.querySelector('#info_id').value
+let title = document.querySelector('#info_title').value
+let title_orig = document.querySelector('#info_title_orig').value
 let x_coor_orig = document.querySelector('#info_x_coor').value
 let y_coor_orig = document.querySelector('#info_y_coor').value
 let x_coor = x_coor_orig
 let y_coor = y_coor_orig
-
-
-
-
-
-
+let description = document.querySelector('#info_description').value
 let changeCoords = document.querySelector('#changeCoords')
 let change = false
 let mapClickListener = null; // Ссылка на обработчик кликов

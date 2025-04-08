@@ -1,10 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Регистрация</title>
+    <script src="https://unpkg.com/htmx.org@1.9.3"></script>
+    <link rel="stylesheet" href="/static/css/reg.css" />
+  </head>
+  <body>
+    <form id="registration_form" hx-post="/registration" hx-target="#response">
+      <h1>Регистрация</h1>
+      <div>Введите логин</div>
+      <input
+        id="login_reg"
+        name="login"
+        type="text"
+        placeholder="логин"
+        required
+      />
 
-</body>
+      <div>Введите пароль</div>
+      <input
+        id="password_reg"
+        name="password"
+        type="password"
+        placeholder="пароль"
+        required
+      />
+
+      <div>Введите имя</div>
+      <input
+        id="name_reg"
+        name="name"
+        type="text"
+        placeholder="имя"
+        required
+      />
+
+      <div>Введите фамилию</div>
+      <input
+        id="surname_reg"
+        name="surname"
+        type="text"
+        placeholder="фамилия"
+        required
+      />
+
+      <button id="submit_reg" type="submit">Зарегистрироваться</button>
+
+      <a href="/vhod" class="form-vhod">Войти</a>
+    </form>
+
+    <script src="/static/js/reg.js"></script>
+    <div id="response"></div>
+    <!--НЕ УДАЛЯТЬ-->
+  </body>
 </html>

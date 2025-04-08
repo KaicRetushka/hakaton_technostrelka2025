@@ -1,10 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход</title>
+    <script src="https://unpkg.com/htmx.org@1.9.3"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/vhod.css">
 </head>
-<body>
 
+<body>
+    
+    <div class="content">
+        <form id="form_enter" hx-post="/enter" hx-target="#response">
+            <h1>Вход</h1>
+            <div class="inputs">
+                <section class="input">
+                    <label for="enter_login">Введите логин</label>
+                    <input type="text" id="enter_login" name="login" required>
+                </section>
+
+                <section class="input">
+                    <label for="enter_pw">Введите пароль</label>
+                    <input type="password" id="enter_pw" name="password" required>
+                </section>
+            </div>
+            <button id="enter_submit">Войти</button>
+            <a class="form_reg" href="/reg">Зарегистрироваться</a>
+        </form>
+    </div>
+    
+    <div id="response"></div>
+    <script src="/static/js/vhod.js"></script>
 </body>
+
 </html>

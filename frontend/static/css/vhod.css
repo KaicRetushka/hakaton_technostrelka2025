@@ -1,0 +1,165 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+form::-webkit-scrollbar {
+    display: none;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #080710;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: none;
+    object-position: center;
+    z-index: -5;
+}
+
+.content {
+    width: 100%;
+    max-width: 400px;
+    position: relative;
+    z-index: 1;
+}
+
+form {
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.13);
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+    padding: 50px 35px;
+}
+
+form * {
+    color: #ffffff;
+    letter-spacing: 0.5px;
+    outline: none;
+    border: none;
+}
+
+form h1 {
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 42px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.input {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-top: 15px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+input {
+    display: block;
+    height: 50px;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.07);
+    border-radius: 3px;
+    padding: 0 10px;
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 300;
+}
+
+::placeholder {
+    color: #e5e5e5;
+}
+
+button {
+    margin-top: 30px;
+    width: 100%;
+    background-color: #A7FC00;
+    color: #080710;
+    padding: 15px 0;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.form_reg {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    color: #e5e5e5;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+.form_reg:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+#response {
+    margin-top: 20px;
+    text-align: center;
+    color: white;
+}
+
+/* Для экранов меньше 768px */
+@media (max-width: 768px) {
+    body {
+        overflow: auto;
+        padding: 2px;
+        align-items: flex-start;
+    }
+
+    form {
+        max-height: 98vh;
+        overflow-y: auto;
+        padding: 25px 25px;
+    }
+
+    img {
+        position: fixed;
+        height: 100vh;
+        width: auto;
+        object-fit: cover;
+    }
+}
+
+/* Для экранов меньше 480px */
+@media (max-width: 480px) {
+    form {
+        padding: 25px 15px;
+    }
+
+    form h1 {
+        font-size: 26px;
+        margin-bottom: 20px;
+    }
+}

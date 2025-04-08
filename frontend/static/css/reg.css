@@ -1,0 +1,193 @@
+/* reg.css - стили для страницы регистрации */
+
+/* Глобальный сброс */
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* Основные стили */
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #080710;
+  color: #ffffff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow-x: hidden;
+  padding: 20px;
+
+  /* Скрываем глобальный скроллбар */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+/* Фоновое изображение */
+body::before {
+  content: '';
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: cover;
+  z-index: -5;
+  background: url('/static/css/images/Mask1 group.svg') no-repeat center center;
+  background-size: cover;
+}
+
+/* Заголовок */
+h1 {
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 42px;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+/* Форма регистрации */
+#registration_form {
+  width: 100%;
+  max-width: 400px;
+  background-color: rgba(255, 255, 255, 0.13);
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+  padding: 50px 35px;
+  margin-bottom: 20px;
+}
+
+/* Группы полей */
+#registration_form > div {
+  display: block;
+  margin-top: 25px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* Поля ввода */
+#registration_form input {
+  display: block;
+  height: 50px;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.07);
+  border-radius: 3px;
+  padding: 0 15px;
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 300;
+  color: #ffffff;
+  border: none;
+  outline: none;
+}
+
+/* Убираем желтую подсветку автозаполнения */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 30px rgba(255, 255, 255, 0.07) inset !important;
+  -webkit-text-fill-color: #ffffff !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Плейсхолдер */
+#registration_form input::placeholder {
+  color: #e5e5e5;
+  opacity: 1;
+}
+
+/* Кнопка */
+#submit_reg {
+  margin-top: 40px;
+  width: 100%;
+  background-color: #A7FC00;
+  color: #080710;
+  padding: 15px 0;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+#submit_reg:hover {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+/* Ссылка "Войти" */
+a {
+  display: inline-block;
+  margin-top: 15px;
+  color: #e5e5e5;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+.form-vhod {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+/* Блок ответа */
+#response {
+  margin-top: 20px;
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 768px) {
+  body {
+    padding: 15px;
+    align-items: center;
+  }
+
+  #registration_form {
+    max-height: 98vh;
+    overflow-y: auto;
+    padding: 30px 25px;
+
+    /* Скрываем скроллбар формы */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  #registration_form::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  #registration_form {
+    padding: 25px 15px;
+  }
+
+  h1 {
+    font-size: 26px;
+    margin-bottom: 20px;
+  }
+}

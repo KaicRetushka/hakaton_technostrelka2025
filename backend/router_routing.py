@@ -8,14 +8,17 @@ templates = Jinja2Templates(directory="frontend/templates")
 
 router_routing = APIRouter()
 
-@router_routing.get("/", tags=["Получение главной страницы"])
+@router_routing.get("/", tags=["Получение главной страницы, is_reg, is_admin, fullname"])
 async def give_index(request: Request):
     token = request.cookies.get(config.JWT_ACCESS_COOKIE_NAME)
     is_reg = False
     if token:
         is_reg = True
+        user_info = select_user_all(security._decode_token(token).sub)
+        fullname = user_info["name"] + " " + user_info["surname"]
     is_admin = check_admin(security._decode_token(token).sub)
-    return templates.TemplateResponse("index.html", {"request": request, "is_reg": is_reg, "is_admin": is_admin})
+    return templates.TemplateResponse("index.html", {"request": request, "is_reg": is_reg, "is_admin": is_admin,
+                                                     "fullname": fullname})
 
 @router_routing.get("/reg",
                     tags=["Получение страницы регистрации"])

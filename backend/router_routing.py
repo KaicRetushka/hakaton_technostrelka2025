@@ -8,7 +8,8 @@ templates = Jinja2Templates(directory="frontend/templates")
 
 router_routing = APIRouter()
 
-@router_routing.get("/", tags=["Получение главной страницы, is_reg, is_admin, fullname"])
+@router_routing.get("/", tags=["""Получение главной страницы, is_reg, is_admin, fullname.
+metka_info{id, title, x_coor, y_coor, description, photos, review_arr, avg_star}"""])
 async def give_index(request: Request):
     token = request.cookies.get(config.JWT_ACCESS_COOKIE_NAME)
     is_reg = False

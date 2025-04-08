@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редактирование профиля</title>
+    <link rel="stylesheet" href="/static/css/edit_profile.css">
+    <script src="https://unpkg.com/htmx.org@1.9.3"></script>
+</head>
+<body>
+    <div class="container">
+        <form id="change_form" hx-post="/user/login_name_surname_avatar" hx-on:htmx:after-request="changeInfo(event)" enctype="multipart/form-data">
+            <div class="avatar-section">
+                <div class="avatar-wrapper">
+                    <img id="img_avatar" src="data:image/jpg;base64,{{ user_info.avatar_src }}" alt="аватар">
+                    <label for="dobav_foto" class="file-label">+</label>
+                    <input id="dobav_foto" type="file" name="avatar">
+                </div>
+            </div>
+            <div class="form-fields">
+                <div class="input-group">
+                    <label>Имя</label>
+                    <input type="text" value="{{user_info.name}}" name="name" required>
+                </div>
+                <div class="input-group">
+                    <label>Фамилия</label>
+                    <input type="text" value="{{user_info.surname}}" name="surname" required>
+                </div>
+                <div class="input-group">
+                    <label>Логин</label>
+                    <input type="text" value="{{user_info.login}}" name="login" required>
+                </div>
+                <div class="button-group">
+                    <button id="change_cancel" type="button" onclick="location.href='/lich_kab'">Отменить</button>
+                    <button id="change_submit" type="submit">Сохранить</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script src="/static/js/edit_profile.js"></script>
+</body>
+</html>

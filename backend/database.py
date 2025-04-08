@@ -43,3 +43,37 @@ def check_admin(_id):
 def insert_metka(title, x_coor, y_coor,  description, type, photos_arr):
     collection_metki.insert_one({"title": title, "x_coor": x_coor, "y_coor": y_coor,
                                  "description": description, "type": type, "photos": photos_arr})
+
+def select_metki_for_index():
+    metki_arr = []
+    metki = collection_metki.find()
+    for metka in metki:
+        metki_arr.append({"id": str(metka["_id"]), "title": metka["title"], "type": metka["type"],
+                          "x_coor": metka["x_coor"], "y_coor": metka["y_coor"]})
+    return metki_arr
+
+def select_metka_info(id):
+    metka_info = collection_metki.find_one({"_id": ObjectId(id)})
+    return metka_info
+
+def select_user_all(id):
+    data = collection_users.find_one({"_id": ObjectId(id)}, {"_id": 0})
+    return data
+
+def update_photo(id, avatar_src):
+    avatar_src = base64.b64encode(avatar_src).decode("utf8")
+    collection_users.update_one({"_id": ObjectId(id)}, {"$set": {"avatar_src": avatar_src}})
+
+def update_name(id, name):
+    collection_users.update_one({"_id": ObjectId(id)}, {"$set": {"name": name}})
+
+
+def update_surname(id, surname):
+    collection_users.update_one({"_id": ObjectId(id)}, {"$set": {"surname": surname}})
+
+def update_login(id, login):
+    user = collection_users.find_one({"login": login, "_id": {"$ne": ObjectId(id)}})
+    if user:
+        return False
+    collection_users.update_one({"_id": ObjectId(id)}, {"$set": {"login": login}})
+    return True

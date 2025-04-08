@@ -1,0 +1,258 @@
+/* Основные стили */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(90deg, #e2e2e2, #c9d6ff);
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 530px;
+    max-height: 240px;
+    background: #fff;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+    margin: 5px;
+    overflow: hidden;
+}
+
+#change_form{
+    display: flex;
+}
+
+/* Секция с аватаром */
+.avatar-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 40px;
+}
+
+.avatar-wrapper {
+    position: relative;
+    width: 270px;
+    height: 270px;
+    border-radius: 5%;
+    overflow: hidden;
+    border: 2px solid #7494ec;
+}
+
+#img_avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.file-label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    font-size: 24px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    cursor: pointer;
+}
+
+.avatar-wrapper:hover .file-label {
+    opacity: 1;
+}
+
+#dobav_foto {
+    display: none;
+}
+
+/* Поля формы */
+.form-fields {
+    flex: 1;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.input-group input {
+    width: 90%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #333;
+    outline: none;
+}
+
+/* Кнопки */
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    gap: 5px;
+}
+
+.button-group button {
+    width: 48%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+#change_cancel {
+    background: #eee;
+    color: #333;
+}
+
+#change_cancel:hover {
+    background: #ddd;
+}
+
+#change_submit {
+    background: #7494ec;
+    color: #fff;
+}
+
+#change_submit:hover {
+    background: #5a7bd4;
+}
+
+@media screen and (max-width: 600px) {
+    .container {
+        padding: 15px;
+        max-height: 100%;
+    }
+
+    #change_form {
+        flex-direction: column;
+        padding: 15px;
+        max-width: 100%;
+    }
+
+    #change_form input {
+        padding: 10px;
+    }
+
+    .input-group{
+        max-width: 100%;
+    }
+
+    .avatar-section {
+        margin-right: 5px;
+        margin-bottom: 20px;
+    }
+
+    .button-group{
+        max-width: 98%;
+    }
+
+    .button-group button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+@media screen and (max-width: 330px){
+    .avatar-wrapper{
+        width: 230px;
+        height: 230px;
+    }
+}
+
+@media screen and (max-width: 290px) {
+    .container {
+        padding: 5px;
+    }
+
+    #change_form {
+        padding: 5px;
+    }
+
+    .input-group{
+        max-width: 99%;
+    }
+
+    .button-group {
+        flex-direction: column;
+    }
+}
+
+@media screen and (max-width: 250px) {
+
+    .avatar-wrapper{
+        width: 180px;
+        height: 180px;
+    }
+
+    .input-group{
+        max-width: 90%;
+    }
+
+    .input-group input{
+        width: 98%;
+    }
+
+}
+
+@media screen and (max-width: 200px) {
+
+    .avatar-wrapper{
+        width: 150px;
+        height: 150px;
+    }
+
+}
+
+@media screen and (max-width: 180px) {
+
+    .avatar-wrapper{
+        width: 100px;
+        height: 100px;
+    }
+
+    .input-group{
+        max-width: 85%;
+    }
+
+}
+
+@media screen and (max-width: 160px) {
+
+    .input-group{
+        max-width: 80%;
+    }
+
+}
+
+@media screen and (max-width: 130px) {
+
+    .avatar-wrapper{
+        width: 90px;
+        height: 90px;
+    }
+
+}

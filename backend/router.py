@@ -3,9 +3,10 @@ from fastapi.responses import HTMLResponse
 from typing import List
 import base64
 
-from backend.database import insert_user, check_user, check_admin, insert_metka
+from backend.database import (insert_user, check_user, check_admin, insert_metka, select_metki_for_index, update_login,
+                              update_name, update_surname, update_photo)
 from backend.jwt import config, security
-from backend.pydantic_classes import (BodyRegistration, ReturnAccessToken, BodyEnter, ReturnDetail)
+from backend.pydantic_classes import (BodyRegistration, ReturnAccessToken, BodyEnter, ReturnDetail, IndexMetka)
 router = APIRouter()
 
 @router.post("/registration", tags=["Регистрация"])
@@ -53,3 +54,23 @@ async def metka(request: Request, title: str = Form(...), x_coor: float = Form(.
             photos_arr.append(base64.b64encode(await photo.read()).decode("utf8"))
     insert_metka(title, x_coor, y_coor,  description, type, photos_arr)
     return {"detail": "Метка добавлена"}
+
+@router.get("/metki", tags=["Получение всех меток на главную страницу"])
+async def get_metki() -> List[IndexMetka]:
+    metki_arr = select_metki_for_index()
+    return metki_arr
+
+@router.post("/user/login_name_surname_avatar", dependencies=[Depends(security.access_token_required)],
+             tags=["Изменение логина, имени, фамилию и аватарки"])
+async def login_name_surname(request: Request, login: str = Form(...), name: str = Form(...), surname: str = Form(...),
+                             avatar: UploadFile = File(None)) -> ReturnDetail:
+    token = request.cookies.get(config.JWT_ACCESS_COOKIE_NAME)
+    data_login = update_login(security._decode_token(token).sub, login)
+    if not(data_login):
+        raise HTTPException(status_code=409, detail="Такой логин уже занят")
+    update_name(security._decode_token(token).sub, name)
+    update_surname(security._decode_token(token).sub, surname)
+    if avatar:
+        avatar_src = await avatar.read()
+        update_photo(security._decode_token(token).sub, avatar_src)
+    return {"detail": "Информация о пользователе изменена"}

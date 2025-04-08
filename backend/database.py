@@ -41,4 +41,4 @@ def check_admin(_id):
     return False
 
 def insert_metka(title, coordinats, description, type, photos):
-
+    pass

@@ -5,6 +5,10 @@ templates = Jinja2Templates(directory="frontend/templates")
 
 router_routing = APIRouter()
 
+@router_routing.get("/", tags=["Получение главной страницы"])
+async def give_index(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
+
 @router_routing.get("/reg",
                     tags=["Получение страницы регистрации"])
 async def give_lead_str(request: Request):

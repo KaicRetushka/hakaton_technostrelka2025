@@ -1,88 +1,83 @@
-const photoMark = document.querySelector('#photo_mark_input')
-const gallery = document.querySelector('#gallery')
-let saveChange = document.querySelector('#saveChange')
-const formData = new FormData()
+const photoMark = document.querySelector('#photo_mark_input');
+const gallery = document.querySelector('#gallery');
+const saveChange = document.querySelector('#saveChange');
+let currentFiles = []; // Храним текущие файлы
+
+// Функция для обновления FormData
+function updateFormData() {
+    const formData = new FormData();
+    
+    // Добавляем файлы с правильным ключом 'photos'
+    currentFiles.forEach(file => {
+        formData.append('photos', file);
+    });
+    
+    return formData;
+}
 
 function myFunc() {
-    const files = photoMark.files
-    const reader = []
-    
-    gallery.innerHTML = ''
+    const files = Array.from(photoMark.files);
+    currentFiles = files; // Обновляем текущие файлы
+    gallery.innerHTML = '';
 
-    for (let j = 0; j < formData.length; j++){
-        formData.delete(`photo[${j}]`)
-    }
-
-    for (let i = 0; i < files.length; i++){
+    files.forEach((file, i) => {
+        const reader = new FileReader();
         
-        const reader = new FileReader()
-        
-        formData.append(`photo[${i}]`, files[i])
-
         reader.onload = function(e) {
-            const imgElement = document.createElement('img')
-            imgElement.src = e.target.result
-            imgElement.style.width = '100px'
-            imgElement.style.height = '100px'
-            imgElement.style.margin = '15px'
-            imgElement.style.objectFit = 'cover'
+            const container = document.createElement('div');
+            container.style.position = 'relative';
+            container.style.display = 'inline-block';
             
-            // Добавляем кнопку удаления
-            const container = document.createElement('div')
-            container.style.position = 'relative'
-            container.style.display = 'inline-block'
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            img.style.width = '100px';
+            img.style.height = '100px';
+            img.style.margin = '15px';
             
-            const deleteBtn = document.createElement('button')
-            deleteBtn.textContent = '×'
-            deleteBtn.style.position = 'absolute'
-            deleteBtn.style.top = '0'
-            deleteBtn.style.right = '0'
-            deleteBtn.style.background = 'red'
-            deleteBtn.style.color = 'white'
-            deleteBtn.style.border = 'none'
-            deleteBtn.style.borderRadius = '50%'
-            deleteBtn.style.cursor = 'pointer'
-            
+            const deleteBtn = document.createElement('button');
+            deleteBtn.textContent = '×';
             deleteBtn.addEventListener('click', () => {
-                container.remove()
-                formData.delete(`photo[${i}]`)
-            })
+                // Удаляем файл из массива
+                currentFiles = currentFiles.filter((_, index) => index !== i);
+                container.remove();
+            });
             
-
-
-            container.appendChild(imgElement)
-            container.appendChild(deleteBtn)
-            gallery.appendChild(container)
+            container.appendChild(img);
+            container.appendChild(deleteBtn);
+            gallery.appendChild(container);
         };
         
-        reader.readAsDataURL(files[i])
-        
-        console.log(files[i])
-    }
+        reader.readAsDataURL(file);
+    });
+}
 
+async function changeMark() {
+    const id = document.querySelector('#info_id').value;
+    const title = document.querySelector('#info_title').value;
+    const x_coor = document.querySelector('#info_x_coor').value;
+    const y_coor = document.querySelector('#info_y_coor').value;
+    const description = document.querySelector('#info_description').value;
     
-    saveChange.onclick = () => {
-        changeMark(formData)
+    try {
+        const formData = updateFormData(); // Актуальные файлы
+        
+        // Параметры ТОЛЬКО в URL, файлы - в FormData
+        const response = await fetch(
+            `http://127.0.0.1:8000/metka/${id}/?title=${title}&x_coor=${x_coor}&y_coor=${y_coor}&description=${description}`, 
+            {
+                method: 'PUT',
+                body: formData // Только файлы
+            }
+        );
+        
+        if (!response.ok) throw new Error('Ошибка сервера');
+        const result = await response.json();
+        console.log('Успех:', result);
+    } catch (error) {
+        console.error('Ошибка:', error);
     }
-
 }
 
-photoMark.addEventListener('change', myFunc)
-
-async function changeMark(formData) {
-
-    let id = document.querySelector('#info_id').value
-    let title = document.querySelector('#info_title').value
-    let x_coor = document.querySelector('#info_x_coor').value
-    let y_coor = document.querySelector('#info_y_coor').value
-    let description = document.querySelector('#info_description').value
-
-    let response = await fetch(`/metka/${id}/?title=${title}&x_coor=${x_coor}&y_coor=${y_coor}&description=${description}`, {
-        method: 'PUT',
-        headers: {'Content-Type': 'multipart/form-data'},
-        body: formData
-    })
-
-    response = await response.json()
-    console.log(response)
-}
+// Инициализация
+photoMark.addEventListener('change', myFunc);
+saveChange.addEventListener('click', changeMark);

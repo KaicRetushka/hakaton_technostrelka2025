@@ -2,7 +2,7 @@ from fastapi import APIRouter, Response, Form, Request, Depends, UploadFile, Fil
 from fastapi.responses import HTMLResponse
 from typing import List
 
-from backend.database import insert_user, check_user, check_admin
+from backend.database import insert_user, check_user, check_admin, insert_metka
 from backend.jwt import config, security
 from backend.pydantic_classes import (BodyRegistration, ReturnAccessToken, BodyEnter, ReturnDetail)
 router = APIRouter()

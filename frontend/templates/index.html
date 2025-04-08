@@ -15,8 +15,7 @@
         {% if is_reg %}
 
         <button id="fullname" class="fullname">{{ fullname }}</button>
-        <button id="button_glav_exit" type="submit" hx-delete="/exit" hx-swap="none"
-            hx-on:htmx:after-request="exitToTheGlav(event)">Выйти</button>
+        <button id="button_glav_exit" type="submit" hx-delete="/exit" hx-swap="none" hx-on:htmx:after-request="exitToTheGlav(event)">Выйти</button>
 
         {% else %}
 
@@ -59,14 +58,9 @@
 
         <label class="file-input" for="photo_mark_input">Добавить фото</label>
         <div id="not_galary" class="custom-file-input">
-            <div id="gallery">
-
-            </div>
-            <input id="photo_mark_input" class="file-upload-btn" type="file" multiple><br>
+            <div id="gallery"></div>
+            <input id="photo_mark_input" type="file" accept="image/*" multiple><br>
         </div>
-
-
-
 
         <div>
             <button id="add_mark_cancel">Отменить</button>

@@ -5,6 +5,7 @@ let btnAddMarkCancel = document.querySelector('#add_mark_cancel')
 let btnAddMarkSave = document.querySelector('#add_mark_save')
 let nameMark = document.querySelector('#name_mark_input')
 let descriptionMark = document.querySelector('#description_mark_input')
+let myMap
 const photoMark = document.querySelector('#photo_mark_input')
 
 function exitToTheGlav(event){
@@ -26,8 +27,6 @@ function myFunc() {
     gallery.innerHTML = '';
 
     for (let i = 0; i < files.length; i++) {
-        let name = 'file' + i; // Уникальное имя для каждого изображения
-        let clas = 'file-class-' + i;
 
         reader[i] = new FileReader();
         reader[i].readAsDataURL(files[i]);
@@ -61,7 +60,7 @@ photoMark.addEventListener("change", (event) => {
 
 ymaps.ready(function () {
     // Создаём карту
-    const myMap = new ymaps.Map("map", {
+    myMap = new ymaps.Map("map", {
         center: [55.76, 37.64],  // Москва
         zoom: 10
     });
@@ -120,7 +119,7 @@ ymaps.ready(function () {
         }
     })
 
-    showMark.addEventListener('click', async () => {
+    async function showAllMark() {
         try {
             myMap.geoObjects.removeAll();
     
@@ -163,15 +162,13 @@ ymaps.ready(function () {
             console.error('Ошибка при загрузке меток:', error);
             alert('Ошибка при загрузке меток: ' + error.message);
         }
+    }
+
+    showMark.addEventListener('click', async () => {
+        showAllMark()
     })
-})
-
-
-//FETCH-запрос для создания метки 
-
-async function addMark(title, coords, description){
-    try {
-
+    async function addMark(title, coords, description){
+    
         let formData = new FormData();
         
         for (let file of photoMark.files) {
@@ -186,7 +183,10 @@ async function addMark(title, coords, description){
         response = await response.json()
         console.log('response: ', response)
 
-    } catch {
-        alert('Что-то пошлое не так')
-    }          
+        showAllMark(myMap)     
 }
+})
+
+
+//FETCH-запрос для создания метки 
+

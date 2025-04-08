@@ -23,6 +23,10 @@
             <button id="glav_but_enter" onclick="location.href='/vhod'">Вход</button>
         </div>
 
+        <div class="glav_but_reg">
+            <button id="glav_but_reg" onclick="location.href='/reg'">Регистрация</button>
+        </div>
+
         {% endif %}
 
         <div class="map">
@@ -31,14 +35,11 @@
 
         {% if is_admin %}
 
-        <button id="show_mark_btn">Показать метки</button>
         <button id="add_mark_btn">Добавить метку</button>
 
-        {% else %}
+        {% endif %}
 
         <button id="show_mark_btn">Показать метки</button>
-
-        {% endif %}
 
     </div>
 

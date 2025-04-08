@@ -69,12 +69,14 @@ ymaps.ready(function () {
 
     let isAddingMode = false; // Режим добавления метки
 
-    // Включаем/выключаем режим добавления метки
-    btnAddMark.addEventListener('click', () => {
-        isAddingMode = !isAddingMode
-        btnAddMark.textContent = isAddingMode ? "Отменить" : "Добавить метку"
-    });
-
+    if (btnAddMark != undefined){
+        // Включаем/выключаем режим добавления метки
+        btnAddMark.addEventListener('click', () => {
+            isAddingMode = !isAddingMode
+            btnAddMark.textContent = isAddingMode ? "Отменить" : "Добавить метку"
+        });
+    }
+    
     // Обработчик клика по карте
     myMap.events.add('click', function (e) {
         if (!isAddingMode) return // Если режим выключен - ничего не делаем

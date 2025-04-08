@@ -160,8 +160,7 @@ function myFunc() {
 }
 
 async function changeMark() {
-    
-    let response = await fetch(`http://127.0.0.1:8000/metka/${id}/?title=${title}&x_coor=${x_coor}&y_coor=${y_coor}&description=${description}`, {
+    let response = await fetch(`http://127.0.0.1:8000/metka/${id}/?title=${document.querySelector('#info_title').value}&x_coor=${x_coor}&y_coor=${y_coor}&description=${document.getElementById("info_description").value}`, {
         method: 'PUT',
         body: formData
     })

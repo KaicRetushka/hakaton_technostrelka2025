@@ -4,9 +4,11 @@ from typing import List
 import base64
 
 from backend.database import (insert_user, check_user, check_admin, insert_metka, select_metki_for_index, update_login,
-                              update_name, update_surname, update_photo, delete_metka_db, update_metka, insert_review)
+                              update_name, update_surname, update_photo, delete_metka_db, update_metka, insert_review,
+                              insert_metka_pokritie, delete_metka_pokritie_db, select_metki_pokritie)
 from backend.jwt import config, security
-from backend.pydantic_classes import (BodyRegistration, ReturnAccessToken, BodyEnter, ReturnDetail, IndexMetka)
+from backend.pydantic_classes import (BodyRegistration, ReturnAccessToken, BodyEnter, ReturnDetail, IndexMetka,
+                                      BodyMetkaPokritie, DictMetkaPokrtitie)
 from backend.router_routing import router_routing
 
 router = APIRouter()
@@ -111,3 +113,30 @@ async def post_review(request: Request, id: str, message_text = Form(...), stars
     if data:
         return {"detail": "Отзыв добавлен"}
     raise HTTPException(status_code=400, detail="Неверный id маршрута")
+
+@router.post("/metka_pokritie", dependencies=[Depends(security.access_token_required)],
+             tags=["Добавление метки покрытия"])
+async def post_metka_pokritie(request: Request, body: BodyMetkaPokritie):
+    token = request.cookies.get(config.JWT_ACCESS_COOKIE_NAME)
+    insert_metka_pokritie(security._decode_token(token).sub, body.text, body.stars, body.x_coor, body.y_coor)
+    return {"detail": "Метка покрытия добавлена"}
+
+@router.delete("/metka_pokritie/{id}", dependencies=[Depends(security.access_token_required)],
+             tags=["Удаление метки покрытия"])
+async def delete_metka_pokritie(request: Request, id: str):
+    token = request.cookies.get(config.JWT_ACCESS_COOKIE_NAME)
+    id_human = security._decode_token(token).sub
+    data = delete_metka_pokritie_db(id_human, id)
+    if data:
+        return {"detail": "Метка покрытия удалена"}
+    raise HTTPException(status_code=400, detail="Неверный id метки")
+
+@router.get("/metki_poktitie", tags=["Получение всех меток покрытия на главную страницу"])
+async def get_metki_poktitie(request: Request) -> List[DictMetkaPokrtitie]:
+    token = request.cookies.get(config.JWT_ACCESS_COOKIE_NAME)
+    if token:
+        id_human = security._decode_token(token).sub
+    else:
+        id_human = None
+    metki_pokritie_arr = select_metki_pokritie(id_human)
+    return metki_pokritie_arr

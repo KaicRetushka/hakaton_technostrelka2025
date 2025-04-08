@@ -1,26 +1,28 @@
 from fastapi import APIRouter, Request, Depends
 from fastapi.templating import Jinja2Templates
 
-from backend.database import check_admin, select_metka_info, select_user_all
+from backend.database import check_admin, select_metka_info, select_user_all, select_chat_nero
 from backend.jwt import security, config
 
 templates = Jinja2Templates(directory="frontend/templates")
 
 router_routing = APIRouter()
 
-@router_routing.get("/", tags=["""Получение главной страницы, is_reg, is_admin, fullname."""])
+@router_routing.get("/", tags=["""Получение главной страницы, is_reg, is_admin, fullname, html_chat."""])
 async def give_index(request: Request):
     token = request.cookies.get(config.JWT_ACCESS_COOKIE_NAME)
     is_reg = False
     is_admin = False
     fullname = None
+    html_chat = ""
     if token:
         is_reg = True
         user_info = select_user_all(security._decode_token(token).sub)
         fullname = user_info["name"] + " " + user_info["surname"]
+        html_chat = select_chat_nero(security._decode_token(token).sub)
         is_admin = check_admin(security._decode_token(token).sub)
     return templates.TemplateResponse("index.html", {"request": request, "is_reg": is_reg, "is_admin": is_admin,
-                                                     "fullname": fullname})
+                                                     "fullname": fullname, "html_chat": html_chat})
 
 @router_routing.get("/reg",
                     tags=["Получение страницы регистрации"])

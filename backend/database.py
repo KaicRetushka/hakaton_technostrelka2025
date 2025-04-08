@@ -7,6 +7,8 @@ db = client["technostrelka_db"]
 
 collection_users = db["collection_users"]
 collection_metki = db["collection_metki"]
+collection_chat_neiro = db["collection_chat_neiro"]
+collection_metki_pokritie = db["collection_metki_pokritie"]
 
 def insert_user(login, password, name, surname):
     if collection_users.count_documents({"login": login}) > 0:
@@ -111,3 +113,55 @@ def insert_review(id, message_text, stars, user_id):
                                 {"$push": {"review_arr":
                                                {"message_text": message_text, "stars": stars, "user_id": user_id}}})
     return True
+
+def add_question_neiro(id_human, human_question, neiro_answer):
+    collection_chat_neiro.insert_one({"id_human": ObjectId(id_human), "human_question": human_question,
+                                      "neiro_answer": neiro_answer})
+
+def select_chat_nero(id):
+    print("a")
+    html = "<div style='overflow: auto; height: 450px;'>"
+    messages = collection_chat_neiro.find({"id_human": ObjectId(id)})
+    print({"id_human": ObjectId(id)})
+    for message in messages:
+        html += f"<p>{message["human_question"] }</p><p>{ message["neiro_answer"]}</p>"
+    html += "</div>"
+    print(html)
+    return html
+
+def neiro_print(id_human, neiro_answer):
+    message = collection_chat_neiro.find_one({"id_human": ObjectId(id_human)}, sort=[('_id', -1)])
+    collection_chat_neiro.update_one({"_id": message["_id"]}, {"$set": {"neiro_answer": neiro_answer}})
+
+def insert_metka_pokritie(id_human, text, stars, x_coor, y_coor):
+    collection_metki_pokritie.insert_one({"id_human": ObjectId(id_human), "text": text, "stars": stars, "x_coor": x_coor,
+                                          "y_coor": y_coor})
+
+def delete_metka_pokritie_db(id_human, id):
+    metka_pokritie = collection_metki_pokritie.find_one({"_id": ObjectId(id), "id_human": ObjectId(id_human)})
+    if not(metka_pokritie):
+        return False
+    collection_metki
+
+def select_metki_pokritie(id_human):
+    metki_pokritie_arr = []
+    metki_pokritie = collection_metki_pokritie.find()
+    if id_human:
+        for metka_pokritie in metki_pokritie:
+            creator = collection_users.find_one({"_id": ObjectId(id_human)})
+            is_my = False
+            if str(creator["_id"]) == id_human:
+                is_my = True
+            creator = creator["surname"] + " " + creator["name"]
+            metki_pokritie_arr.append({"id_metka_pokrtitie": str(metka_pokritie["_id"]), "cretor": creator,
+                                       "x_coor": metka_pokritie["x_coor"], "y_coor": metka_pokritie["y_coor"],
+                                       "is_my": is_my, "text": metka_pokritie["text"]})
+    else:
+        for metka_pokritie in metki_pokritie:
+            creator = collection_users.find_one({"_id": metka_pokritie["id_human"]})
+            is_my = False
+            creator = creator["surname"] + " " + creator["name"]
+            metki_pokritie_arr.append({"id_metka_pokrtitie": str(metka_pokritie["_id"]), "cretor": creator,
+                                       "x_coor": metka_pokritie["x_coor"], "y_coor": metka_pokritie["y_coor"],
+                                       "is_my": is_my,"text": metka_pokritie["text"]})
+    return metki_pokritie_arr

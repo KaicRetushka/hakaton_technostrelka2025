@@ -8,6 +8,8 @@ let descriptionMark = document.querySelector('#description_mark_input')
 let myMap
 const photoMark = document.querySelector('#photo_mark_input')
 const gallery = document.querySelector('#gallery')
+
+
 function exitToTheGlav(event){
     const status = event.detail.xhr.status
 

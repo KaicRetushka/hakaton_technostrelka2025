@@ -3,9 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=126279f8-7d73-4da9-a3e6-369f3c5d0f2f&lang=ru_RU"
+        type="text/javascript"></script>
 </head>
 <body>
+    
+    <div class="map">
+        <div id="map" style="width: 100%; height: 400px;"></div>
+    </div>
+
     {% if is_admin%}
+
+    <div hidden>
+        <p>Название ориг</p>
+        <input id="info_title_orig" value="{{ metka_info.title }}"></input>
+    </div>
 
         <div hidden>
             <p>id</p>
@@ -22,7 +34,13 @@
             <input id="info_y_coor" value="{{ metka_info.y_coor }}"></input>
         </div>
 
+        <div id="cancel_change" hidden>
+            <button id="cancelСhangeCoords">Отменить</button>
+        </div> 
 
+        <div id="okCangeCoords">
+            <button id="changeCoords">Поменять координаты</button>
+        </div>
 
         <div>
             <p>Название</p>
@@ -47,6 +65,9 @@
                 <input id="photo_mark_input" type="file" accept="image/*" multiple><br>
             </div>
         </div>
+
+        <br><button id="backToGlav" onclick="location.href='/'">Назад</button>
+        <button id="saveChange">Сохранить</button>
     
     {% else %}
         <div>
@@ -69,11 +90,11 @@
         
         <input value="{{ metka_info.description }}"></input>
 
-
+        <br><button id="backToGlav" onclick="location.href='/'">Назад</button>
+        
     {% endif %}
 
-    <br><button id="backToGlav" onclick="location.href='/'">Назад</button>
-    <button id="saveChange" type="button">Сохранить</button>
+    
 
     <script src="/static/js/metka_info.js"></script>
 </body>

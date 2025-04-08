@@ -67,6 +67,7 @@
         </div>
 
         <br><button id="backToGlav" onclick="location.href='/'">Назад</button>
+        <button id="deleteMark" type="submit" hx-delete="/metka/{{ metka_info.id }}" hx-swap="none">Удалить метку</button>
         <button id="saveChange">Сохранить</button>
     
     {% else %}
@@ -91,7 +92,7 @@
         <input value="{{ metka_info.description }}"></input>
 
         <br><button id="backToGlav" onclick="location.href='/'">Назад</button>
-        
+
     {% endif %}
 
     

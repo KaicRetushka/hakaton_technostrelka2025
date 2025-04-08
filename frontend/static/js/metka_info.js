@@ -153,10 +153,6 @@ function myFunc() {
         console.log(files[i])
     }
 
-    
-
-    
-
 }
 
 async function changeMark() {

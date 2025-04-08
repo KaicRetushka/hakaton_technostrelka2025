@@ -1,10 +1,10 @@
-from fastapi import APIRouter, Response, Form, Request, Depends, UploadFile, File, HTTPException
+from fastapi import APIRouter, Response, Form, Request, Depends, UploadFile, File, HTTPException, Query
 from fastapi.responses import HTMLResponse
 from typing import List
 import base64
 
 from backend.database import (insert_user, check_user, check_admin, insert_metka, select_metki_for_index, update_login,
-                              update_name, update_surname, update_photo)
+                              update_name, update_surname, update_photo, delete_metka_db)
 from backend.jwt import config, security
 from backend.pydantic_classes import (BodyRegistration, ReturnAccessToken, BodyEnter, ReturnDetail, IndexMetka)
 router = APIRouter()
@@ -39,19 +39,17 @@ async def exit(response: Response) -> ReturnDetail:
 
 @router.post("/metka", dependencies=[Depends(security.access_token_required)],
              tags=["Добавление метки админом"])
-async def metka(request: Request, title: str = Form(...), x_coor: float = Form(...), y_coor: float = Form(...),
-                description: str = Form(...),
-                photos: List[UploadFile] = File(None)):
+async def metka(request: Request, title: str = Query(...), x_coor: float = Query(...), y_coor: float = Query(...),
+                description: str = Query(""), photos: List[UploadFile] = File(None)):
     token = request.cookies.get(config.JWT_ACCESS_COOKIE_NAME)
     data = check_admin(security._decode_token(token).sub)
     if not(data):
         return HTTPException(status_code=400, detail="Вы не являеетесь администратором")
-    if not(photos):
-        photos_arr = []
-    else:
-        photos_arr = []
+    photos_arr = []
+    if photos:
         for photo in photos:
             photos_arr.append(base64.b64encode(await photo.read()).decode("utf8"))
+    print(photos_arr)
     insert_metka(title, x_coor, y_coor,  description, photos_arr)
     return {"detail": "Метка добавлена"}
 
@@ -74,3 +72,15 @@ async def login_name_surname(request: Request, login: str = Form(...), name: str
         avatar_src = await avatar.read()
         update_photo(security._decode_token(token).sub, avatar_src)
     return {"detail": "Информация о пользователе изменена"}
+
+@router.delete("/metka/{id}", dependencies=[Depends(security.access_token_required)], tags=["Удаление метки"])
+async def delete_metka(id: str, request: Request):
+    token = request.cookies.get(config.JWT_ACCESS_COOKIE_NAME)
+    data = check_admin(security._decode_token(token).sub)
+    if not(data):
+        return HTTPException(status_code=400, detail="Вы не являеетесь администратором")
+    delete_metka_db(id)
+    return {"detail": "Метка удалена"}
+
+@router.put("/metka", dependencies=[Depends(security.access_token_required)], tags=["Изменение метки"])
+async def put_metka()

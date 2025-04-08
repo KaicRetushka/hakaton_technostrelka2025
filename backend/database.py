@@ -40,7 +40,7 @@ def check_admin(_id):
         return True
     return False
 
-def insert_metka(title, x_coor, y_coor,  description, type, photos_arr):
+def insert_metka(title, x_coor, y_coor,  description, photos_arr):
     collection_metki.insert_one({"title": title, "x_coor": x_coor, "y_coor": y_coor,
                                  "description": description, "photos": photos_arr})
 
@@ -77,3 +77,6 @@ def update_login(id, login):
         return False
     collection_users.update_one({"_id": ObjectId(id)}, {"$set": {"login": login}})
     return True
+
+def delete_metka_db(id):
+    collection_metki.delete_one({"_id": ObjectId(id)})

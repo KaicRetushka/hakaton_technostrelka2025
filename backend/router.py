@@ -41,7 +41,7 @@ async def exit(response: Response) -> ReturnDetail:
              tags=["Добавление метки админом"])
 async def metka(request: Request, title: str = Form(...), x_coor: float = Form(...), y_coor: float = Form(...),
                 description: str = Form(...),
-                type: str = Form(...), photos: List[UploadFile] = File(None)):
+                photos: List[UploadFile] = File(None)):
     token = request.cookies.get(config.JWT_ACCESS_COOKIE_NAME)
     data = check_admin(security._decode_token(token).sub)
     if not(data):
@@ -52,7 +52,7 @@ async def metka(request: Request, title: str = Form(...), x_coor: float = Form(.
         photos_arr = []
         for photo in photos:
             photos_arr.append(base64.b64encode(await photo.read()).decode("utf8"))
-    insert_metka(title, x_coor, y_coor,  description, type, photos_arr)
+    insert_metka(title, x_coor, y_coor,  description, photos_arr)
     return {"detail": "Метка добавлена"}
 
 @router.get("/metki", tags=["Получение всех меток на главную страницу"])

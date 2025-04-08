@@ -42,7 +42,7 @@ def check_admin(_id):
 
 def insert_metka(title, x_coor, y_coor,  description, type, photos_arr):
     collection_metki.insert_one({"title": title, "x_coor": x_coor, "y_coor": y_coor,
-                                 "description": description, "type": type, "photos": photos_arr})
+                                 "description": description, "photos": photos_arr})
 
 def select_metki_for_index():
     metki_arr = []

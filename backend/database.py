@@ -52,12 +52,12 @@ def select_metki_for_index():
                           "x_coor": metka["x_coor"], "y_coor": metka["y_coor"]})
     return metki_arr
 
-def select_metka_info(id):
-    metka_info = collection_metki.find_one({"_id": ObjectId(id)})
-    for review_arr
-    return {"_id": str(metka_info["id"]), "title": metka_info["title"], "x_coor": metka_info["x_coor"],
-            "y_coor": metka_info["y_coor"], "description": metka_info["description"],
-            "photos_arr": metka_info["photos_arr"], "avg_star": }
+# def select_metka_info(id):
+#     metka_info = collection_metki.find_one({"_id": ObjectId(id)})
+#     # for review_arr
+#     return {"_id": str(metka_info["id"]), "title": metka_info["title"], "x_coor": metka_info["x_coor"],
+#             "y_coor": metka_info["y_coor"], "description": metka_info["description"],
+#             "photos_arr": metka_info["photos_arr"], "avg_star": }
 
 def select_user_all(id):
     data = collection_users.find_one({"_id": ObjectId(id)}, {"_id": 0})

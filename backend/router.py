@@ -83,4 +83,5 @@ async def delete_metka(id: str, request: Request):
     return {"detail": "Метка удалена"}
 
 @router.put("/metka", dependencies=[Depends(security.access_token_required)], tags=["Изменение метки"])
-async def put_metka()
+async def put_metka():
+    pass

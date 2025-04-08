@@ -1,42 +1,47 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <title>Карта покрытия Tele2</title>
-    <script src="https://api-maps.yandex.ru/2.1/?apikey=126279f8-7d73-4da9-a3e6-369f3c5d0f2f&lang=ru_RU" type="text/javascript"></script>
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=126279f8-7d73-4da9-a3e6-369f3c5d0f2f&lang=ru_RU"
+        type="text/javascript"></script>
     <script src="https://unpkg.com/htmx.org@1.9.3"></script>
     <link rel="stylesheet" href="/static/css/index.css">
 </head>
-<body>
 
-    {% if is_reg %}
+<body>
+    <div class="content">
+        {% if is_reg %}
 
         <button id="fullname" class="fullname">{{ fullname }}</button>
-        <button id="button_glav_exit" type="submit" hx-delete="/exit" hx-swap="none" hx-on:htmx:after-request="exitToTheGlav(event)">Выйти</button>
-        
-    {% else %}
-    
-        <div>
+        <button id="button_glav_exit" type="submit" hx-delete="/exit" hx-swap="none"
+            hx-on:htmx:after-request="exitToTheGlav(event)">Выйти</button>
+
+        {% else %}
+
+        <div class="glav_but_enter">
             <button id="glav_but_enter" onclick="location.href='/vhod'">Вход</button>
-            <button id="glav_but_reg" onclick="location.href='/reg'">Регистрация</button>
         </div>
-    
-    {% endif %}
 
-    
-    <div id="map"></div>
+        {% endif %}
 
+        <div class="map">
+            <div id="map"></div>
+        </div>
 
-    {% if is_admin %}
+        {% if is_admin %}
 
         <button id="show_mark_btn">Показать метки</button>
         <button id="add_mark_btn">Добавить метку</button>
 
-    {% else %}
+        {% else %}
 
         <button id="show_mark_btn">Показать метки</button>
 
-    {% endif %}
+        {% endif %}
+
+    </div>
 
     <dialog id="add_mark_dialog">
 
@@ -64,6 +69,7 @@
         </div>
     </dialog>
 
-    <script src="/static/js/index.js"></script> 
+    <script src="/static/js/index.js"></script>
 </body>
+
 </html>

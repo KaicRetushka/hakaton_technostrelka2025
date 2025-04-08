@@ -9,7 +9,9 @@
 </head>
 <body>
     <div class="container">
+        
         <form id="change_form" hx-post="/user/login_name_surname_avatar" hx-on:htmx:after-request="changeInfo(event)" enctype="multipart/form-data">
+            <img src="/static/css/images/t2_Logo_White_CMYK.svg" alt="">
             <div class="avatar-section">
                 <div class="avatar-wrapper">
                     <img id="img_avatar" src="data:image/jpg;base64,{{ user_info.avatar_src }}" alt="аватар">

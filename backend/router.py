@@ -76,12 +76,13 @@ async def login_name_surname(request: Request, login: str = Form(...), name: str
     return {"detail": "Информация о пользователе изменена"}
 
 @router.delete("/metka/{id}", dependencies=[Depends(security.access_token_required)], tags=["Удаление метки"])
-async def delete_metka(id: str, request: Request):
+async def delete_metka(response: Response, id: str, request: Request):
     token = request.cookies.get(config.JWT_ACCESS_COOKIE_NAME)
     data = check_admin(security._decode_token(token).sub)
     if not(data):
         return HTTPException(status_code=400, detail="Вы не являеетесь администратором")
     delete_metka_db(id)
+    response.headers["hx-redirect"] = "/"
     return {"detail": "Метка удалена"}
 
 @router.put("/metka/{id}", dependencies=[Depends(security.access_token_required)], tags=["Изменение метки"])

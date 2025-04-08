@@ -54,7 +54,10 @@ def select_metki_for_index():
 
 def select_metka_info(id):
     metka_info = collection_metki.find_one({"_id": ObjectId(id)})
-    return metka_info
+    for review_arr
+    return {"_id": str(metka_info["id"]), "title": metka_info["title"], "x_coor": metka_info["x_coor"],
+            "y_coor": metka_info["y_coor"], "description": metka_info["description"],
+            "photos_arr": metka_info["photos_arr"], "avg_star": }
 
 def select_user_all(id):
     data = collection_users.find_one({"_id": ObjectId(id)}, {"_id": 0})
@@ -96,7 +99,7 @@ def update_metka(id, title, x_coor, y_coor, description, photos_arr):
 def insert_review(id, message_text, stars, user_id):
     if not(collection_metki.find_one({"_id": ObjectId(id)})):
         return False
-    collection_users.update_one({"_id": ObjectId(id)},
+    collection_metki.update_one({"_id": ObjectId(id)},
                                 {"$push": {"review_arr":
                                                {"message_text": message_text, "stars": stars, "user_id": user_id}}})
     return True

@@ -16,7 +16,7 @@ async def give_index(request: Request):
         is_reg = True
         user_info = select_user_all(security._decode_token(token).sub)
         fullname = user_info["name"] + " " + user_info["surname"]
-    is_admin = check_admin(security._decode_token(token).sub)
+        is_admin = check_admin(security._decode_token(token).sub)
     return templates.TemplateResponse("index.html", {"request": request, "is_reg": is_reg, "is_admin": is_admin,
                                                      "fullname": fullname})
 
@@ -37,7 +37,7 @@ async def get_metka_id(request: Request, id: str):
     except:
         is_admin = False
     metka_info = select_metka_info(id)
-    print(metka_info)
+
     return templates.TemplateResponse("metka_info.html", {"request": request, "is_admin": is_admin,
                                                      "metka_info": metka_info})
 

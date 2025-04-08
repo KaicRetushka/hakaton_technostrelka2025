@@ -12,6 +12,8 @@ router_routing = APIRouter()
 async def give_index(request: Request):
     token = request.cookies.get(config.JWT_ACCESS_COOKIE_NAME)
     is_reg = False
+    is_admin = False
+    fullname = None
     if token:
         is_reg = True
         user_info = select_user_all(security._decode_token(token).sub)

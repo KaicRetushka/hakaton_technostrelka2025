@@ -4,17 +4,39 @@
     <meta charset="UTF-8">
     <title>Карта покрытия Tele2</title>
     <script src="https://api-maps.yandex.ru/2.1/?apikey=126279f8-7d73-4da9-a3e6-369f3c5d0f2f&lang=ru_RU" type="text/javascript"></script>
-    <style>
-        #map {
-            height: 400px;
-            width: 600px;
-        }
-    </style>
+    <script src="https://unpkg.com/htmx.org@1.9.3"></script>
+    <link rel="stylesheet" href="/static/css/index.css">
 </head>
 <body>
+
+    {% if is_reg %}
+
+        <button id="fullname" class="fullname">{{ fullname }}</button>
+        <button id="button_glav_exit" type="submit" hx-delete="/exit" hx-swap="none" hx-on:htmx:after-request="exitToTheGlav(event)">Выйти</button>
+        
+    {% else %}
+    
+        <div>
+            <button id="glav_but_enter">Вход</button>
+            <button id="glav_but_reg">Регистрация</button>
+        </div>
+    
+    {% endif %}
+
+    
     <div id="map"></div>
 
-    <button id="add_mark_btn">Добавить метку</button>
+
+    {% if is_admin %}
+
+        <button id="show_mark_btn">Показать метки</button>
+        <button id="add_mark_btn">Добавить метку</button>
+
+    {% else %}
+
+        <button id="show_mark_btn">Показать метки</button>
+
+    {% endif %}
 
     <dialog id="add_mark_dialog">
 
@@ -22,20 +44,24 @@
 
         <div>
             <p>Название</p>
-            <input id="add_mark_input" type="text">
+            <input id="name_mark_input" type="text">
         </div>
 
         <div>
             <p>Описание</p>
-            <input id="add_mark_input" type="text">
+            <input id="description_mark_input" type="text">
         </div>
 
         <div>
             <p>Фотографии</p>
-            <label for="add_mark_input">Добавить фотографии</label>
-            <input id="add_mark_input" type="file" multiple>
+            <label for="photo_mark_input">Добавить фотографии</label>
+            <input id="photo_mark_input" type="file" multiple>
         </div>
 
+        <div>
+            <button id="add_mark_cancel">Отменить</button>
+            <button id="add_mark_save">Сохранить</button>
+        </div>
     </dialog>
 
     <script src="/static/js/index.js"></script> 

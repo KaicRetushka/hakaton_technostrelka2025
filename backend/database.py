@@ -42,13 +42,13 @@ def check_admin(_id):
 
 def insert_metka(title, x_coor, y_coor,  description, photos_arr):
     collection_metki.insert_one({"title": title, "x_coor": x_coor, "y_coor": y_coor,
-                                 "description": description, "photos": photos_arr})
+                                 "description": description, "photos": photos_arr, "review_arr": []})
 
 def select_metki_for_index():
     metki_arr = []
     metki = collection_metki.find()
     for metka in metki:
-        metki_arr.append({"id": str(metka["_id"]), "title": metka["title"], "type": metka["type"],
+        metki_arr.append({"id": str(metka["_id"]), "title": metka["title"],
                           "x_coor": metka["x_coor"], "y_coor": metka["y_coor"]})
     return metki_arr
 
@@ -80,3 +80,23 @@ def update_login(id, login):
 
 def delete_metka_db(id):
     collection_metki.delete_one({"_id": ObjectId(id)})
+
+def update_metka(id, title, x_coor, y_coor, description, photos_arr):
+    if not(collection_metki.find_one({"_id": ObjectId(id)})):
+        return False
+    if photos_arr:
+        collection_metki.update_one({"_id": ObjectId(id)}, {"$set": {"title": title, "x_coor": x_coor,
+                                                             "y_coor": y_coor, "description": description,
+                                                             "photos_arr": photos_arr}})
+    else:
+        collection_metki.update_one({"_id": ObjectId(id)}, {"$set": {"title": title, "x_coor": x_coor,
+                                                             "y_coor": y_coor, "description": description}})
+    return True
+
+def insert_review(id, message_text, stars, user_id):
+    if not(collection_metki.find_one({"_id": ObjectId(id)})):
+        return False
+    collection_users.update_one({"_id": ObjectId(id)},
+                                {"$push": {"review_arr":
+                                               {"message_text": message_text, "stars": stars, "user_id": user_id}}})
+    return True

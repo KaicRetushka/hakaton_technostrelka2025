@@ -7,8 +7,10 @@
 <body>
     {% if is_admin%}
         <input value="{{ metka_info.title }}"></input>
+        <input value="{{ metka_info.description }}"></input>
     {% else %}
         <p>{{ metka_info.title }}</p>
+        <p>{{ metka_info.description }}</p>
     {% endif %}
 </body>
 </html>

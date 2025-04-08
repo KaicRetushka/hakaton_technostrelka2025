@@ -10,7 +10,12 @@ router_routing = APIRouter()
 
 @router_routing.get("/", tags=["Получение главной страницы"])
 async def give_index(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    token = request.cookies.get(config.JWT_ACCESS_COOKIE_NAME)
+    is_reg = False
+    if token:
+        is_reg = True
+    is_admin = check_admin(security._decode_token(token).sub)
+    return templates.TemplateResponse("index.html", {"request": request, "is_reg": is_reg, "is_admin": is_admin})
 
 @router_routing.get("/reg",
                     tags=["Получение страницы регистрации"])

@@ -19,6 +19,5 @@ class ReturnDetail(BaseModel):
 class IndexMetka(BaseModel):
     id: str
     title: str
-    type: str
     x_coor: float
     y_coor: float

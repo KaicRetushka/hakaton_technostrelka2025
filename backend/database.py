@@ -35,10 +35,11 @@ def add_admin():
                                      "avatar_src": avatar_src, "role": "admin", "is_ban": False})
 
 def check_admin(_id):
-    user = collection_users.find_one({"_id", ObjectId(_id)})
+    user = collection_users.find_one({"_id": ObjectId(_id)})
     if user["role"] == "admin":
         return True
     return False
 
-def insert_metka(title, coordinats, description, type, photos):
-    pass
+def insert_metka(title, x_coor, y_coor,  description, type, photos_arr):
+    collection_metki.insert_one({"title": title, "x_coor": x_coor, "y_coor": y_coor,
+                                 "description": description, "type": type, "photos": photos_arr})

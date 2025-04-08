@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Response, Form, Request, Depends, UploadFile, File, HTTPException
 from fastapi.responses import HTMLResponse
 from typing import List
+import base64
 
 from backend.database import insert_user, check_user, check_admin, insert_metka
 from backend.jwt import config, security
@@ -35,14 +36,20 @@ async def exit(response: Response) -> ReturnDetail:
     response.delete_cookie(config.JWT_ACCESS_COOKIE_NAME)
     return {"detail": "Вы вышли из аккаунта"}
 
-@router.post("/metka",dependencies=[Depends(security.access_token_required)],
+@router.post("/metka", dependencies=[Depends(security.access_token_required)],
              tags=["Добавление метки админом"])
-async def metka(request: Request, title: str = Form(...), coordinats: list = Form(...), description: str = Form(...),
+async def metka(request: Request, title: str = Form(...), x_coor: float = Form(...), y_coor: float = Form(...),
+                description: str = Form(...),
                 type: str = Form(...), photos: List[UploadFile] = File(None)):
     token = request.cookies.get(config.JWT_ACCESS_COOKIE_NAME)
-    _id = security._decode_token(token)
-    data = check_admin(_id)
+    data = check_admin(security._decode_token(token).sub)
     if not(data):
         return HTTPException(status_code=400, detail="Вы не являеетесь администратором")
-    insert_metka(title, coordinats, description, type, photos)
+    if not(photos):
+        photos_arr = []
+    else:
+        photos_arr = []
+        for photo in photos:
+            photos_arr.append(base64.b64encode(await photo.read()).decode("utf8"))
+    insert_metka(title, x_coor, y_coor,  description, type, photos_arr)
     return {"detail": "Метка добавлена"}

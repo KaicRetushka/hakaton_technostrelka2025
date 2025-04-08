@@ -6,15 +6,75 @@
 </head>
 <body>
     {% if is_admin%}
-        <input value="{{ metka_info.title }}"></input>
-        <input value="{{ metka_info.description }}"></input>
-    {% else %}
-        <p>{{ metka_info.title }}</p>
-        <p>{{ metka_info.description }}</p>
-    {% endif %}
-    
-    <p>{{ metka_info.avg_star }}</p>
 
-    <button id="backToGlav" onclick="location.href='/'">Назад</button>
+        <div hidden>
+            <p>id</p>
+            <input id="info_id" value="{{ metka_info.id }}"></input>
+        </div>
+
+        <div hidden>
+            <p>x_coor</p>
+            <input id="info_x_coor" value="{{ metka_info.x_coor }}"></input>
+        </div>
+
+        <div hidden>
+            <p>y_coor</p>
+            <input id="info_y_coor" value="{{ metka_info.y_coor }}"></input>
+        </div>
+
+
+
+        <div>
+            <p>Название</p>
+            <input id="info_title" value="{{ metka_info.title }}"></input>
+        </div>
+
+        <div>
+            <p>Описание</p>
+            <input id="info_description" value="{{ metka_info.description }}"></input>
+        </div>
+
+        <div>
+            <p>Фотографии</p>
+
+            <label class="file-input" for="photo_mark_input"></label>
+            <div id="not_galary" class="custom-file-input">
+                <div id="gallery">
+                    {%for photo in metka_info.photos%}
+                        <img src="data:image/jpg;base64,{{ photo }}" alt="" style="height: 100px; width: 100px;">
+                    {%endfor%}
+                </div>
+                <input id="photo_mark_input" type="file" accept="image/*" multiple><br>
+            </div>
+        </div>
+    
+    {% else %}
+        <div>
+            <p>Название</p>
+            <div>{{ metka_info.title }}</div>
+        </div>
+
+        <div>
+            <p>Описание</p>
+            <div>{{ metka_info.description }}</div>
+        </div>
+
+        <div>
+            <p>Фотографии</p>
+
+            {%for photo in photos%}
+                <img src="data:image/jpg;base64,{{ metka_info.photo }}" alt="">
+            {%endfor%}
+        </div>
+        
+        <input value="{{ metka_info.description }}"></input>
+
+
+    {% endif %}
+
+    <br><button id="backToGlav" onclick="location.href='/'">Назад</button>
+    <button id="saveChange" type="button">Сохранить</button>
+
+    <script src="/static/js/metka_info.js"></script>
 </body>
 </html>

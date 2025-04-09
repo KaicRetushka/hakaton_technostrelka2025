@@ -12,24 +12,53 @@
 
 <body>
     <div class="content">
-        {% if is_reg %}
+        <div class="nav-content">
+            <img src="/static/css/images/t2_Logo_White_CMYK.svg" alt="">
 
-        <button id="fullname" class="fullname">{{ fullname }}</button>
-        <button id="button_glav_exit" type="submit" hx-delete="/exit" hx-swap="none" hx-on:htmx:after-request="exitToTheGlav(event)">Выйти</button>
+            {% if is_reg %}
+            <div class="autoriz-polz">
+                <button id="fullname" class="fullname">{{ fullname }}</button>
+                <button id="button_glav_exit" type="submit" hx-delete="/exit" hx-swap="none"
+                    hx-on:htmx:after-request="exitToTheGlav(event)">Выйти</button>
 
-        {% else %}
+                {% else %}
 
-        <div class="glav_but_enter">
-            <button id="glav_but_enter" onclick="location.href='/vhod'">Вход</button>
+                <div class="glav_but_enter">
+                    <button id="glav_but_enter" onclick="location.href='/vhod'">Вход</button>
+                </div>
+
+                {% endif %}
+            </div>
         </div>
 
+<<<<<<< Updated upstream
         <div class="glav_but_reg">
             <button id="glav_but_reg" onclick="location.href='/reg'">Регистрация</button>
         </div>
 
         {% endif %}
 
+=======
+>>>>>>> Stashed changes
         <div class="map">
+            <div class="coverage-card">
+                <h1>Карта покрытия</h1>
+                <ul>
+                    <li data-checked="false">город, адрес или метро</li>
+                    <li data-checked="true">
+                        4G
+                        <p>Очень быстрый интернет, видео в высоком качестве</p>
+                    </li>
+                    <li data-checked="true">
+                        3G
+                        <p>Разговоры и интернет без ограничений, музыка и видео</p>
+                    </li>
+                    <li data-checked="true">
+                        2G
+                        <p>Телефонная связь, интернет для новостей и социальных сетей</p>
+                    </li>
+                </ul>
+            </div>
             <div id="map"></div>
         </div>
 

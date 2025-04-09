@@ -1,0 +1,60 @@
+/* Regular (обычный) */
+@font-face {
+    font-family: 'HalvarBreitt2';
+    src: 
+        url('HalvarBreitt2-Regular.woff2') format('woff2'),
+        url('HalvarBreitt2-Regular.otf') format('opentype'),
+        url('HalvarBreitt2-Regular.ttf') format('truetype');
+    font-weight: 400; /* normal */
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Bold (жирный) */
+@font-face {
+    font-family: 'HalvarBreitt2';
+    src: 
+        url('HalvarBreitt2-Bold.woff2') format('woff2'),
+        url('HalvarBreitt2-Bold.otf') format('opentype'),
+        url('HalvarBreitt2-Bold.ttf') format('truetype');
+    font-weight: 700; /* bold */
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Italic (курсив) */
+@font-face {
+    font-family: 'HalvarBreitt2';
+    src: 
+        url('HalvarBreitt2-Italic.woff2') format('woff2'),
+        url('HalvarBreitt2-Italic.otf') format('opentype'),
+        url('HalvarBreitt2-Italic.ttf') format('truetype');
+    font-weight: 400; /* normal */
+    font-style: italic; /* курсив */
+    font-display: swap;
+}
+
+/* Light (лёгкий) */
+@font-face {
+    font-family: 'HalvarBreitt2';
+    src: 
+        url('HalvarBreitt2-Light.woff2') format('woff2'),
+        url('HalvarBreitt2-Light.otf') format('opentype'),
+        url('HalvarBreitt2-Light.ttf') format('truetype');
+    font-weight: 300; /* light */
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Extra Bold (уже был) */
+@font-face {
+    font-family: 'HalvarBreitt2';
+    src: 
+        url('HalvarBreitt2-XBd.woff2') format('woff2'),
+        url('HalvarBreitt2-XBd.otf') format('opentype'),
+        url('HalvarBreitt2-XBd.ttf') format('truetype');
+    font-weight: 800; /* extra bold */
+    font-style: normal;
+    font-display: swap;
+}
+

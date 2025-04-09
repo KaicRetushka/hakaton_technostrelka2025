@@ -218,3 +218,14 @@ def update_password(id, old_password, new_password):
         collection_users.update_one({"_id": ObjectId(id)}, {"$set": {"password": new_password}})
         return True
     return False
+
+def select_my_metki_poktitie(id_human):
+    metka_pokritia = collection_metki_pokritie.find({"id_human": ObjectId(id_human)})
+    metki_pokritie_arr = []
+    creator = collection_users.find_one({"_id": ObjectId(id_human)})
+    creator = creator["surname"] + " " + creator["name"]
+    for metka_pokritie in metka_pokritia: 
+        metki_pokritie_arr.append({"id_metka_pokrtitie": str(metka_pokritie["_id"]), "cretor": creator,
+                                        "x_coor": metka_pokritie["x_coor"], "y_coor": metka_pokritie["y_coor"],
+                                        "is_my": True, "text": metka_pokritie["text"]})
+    return metki_pokritie_arr

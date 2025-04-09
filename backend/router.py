@@ -7,7 +7,7 @@ from backend.database import (insert_user, check_user, check_admin, insert_metka
                               update_name, update_surname, update_photo, delete_metka_db, update_metka, insert_review,
                               insert_metka_pokritie, delete_metka_pokritie_db, select_metki_pokritie, select_metka_info, insert_pokritie,
                               delete_pokritie_db, select_all_pokritia, select_all_pokritia_2g, select_all_pokritia_3g, select_all_pokritia_4g,
-                              update_password)
+                              update_password, select_my_metki_poktitie)
 from backend.jwt import config, security
 from backend.pydantic_classes import (BodyRegistration, ReturnAccessToken, BodyEnter, ReturnDetail, IndexMetka,
                                       BodyMetkaPokritie, DictMetkaPokrtitie, AddBodyPokritie)
@@ -192,3 +192,11 @@ async def put_user_password(request: Request, old_password: str = Form(...),
     if data:
         return {"detail": "Пароль изменён"}
     raise HTTPException(status_code=404, detail="Неверный старый пароль")
+
+@router.get("/my/metki_poktitie",  dependencies=[Depends(security.access_token_required)], 
+            tags=["Получение всех меток покрытия пользователя, которые он может удалить"])
+async def get_my_metki_poktitie(request: Request) -> List[DictMetkaPokrtitie]:
+    token = request.cookies.get(config.JWT_ACCESS_COOKIE_NAME)
+    id_human = security._decode_token(token).sub
+    metki_pokritie_arr = select_my_metki_poktitie(id_human)
+    return metki_pokritie_arr

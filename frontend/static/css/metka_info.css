@@ -1,9 +1,286 @@
-#map {
-    height:  60vh;
-    width: 100%;
+/* Основные стили */
+:root {
+    --primary-color: #27ae60;
+    /* Зеленый Tele2 */
+    --secondary-color: #2ecc71;
+    --dark-bg: #000000;
+    --light-text: #ffffff;
+    --gray-text: #aaaaaa;
+    --border-color: #333333;
 }
 
-#map1 {
-    height:  60vh;
+body {
+    background-color: var(--dark-bg);
+    color: var(--light-text);
+    font-family: 'HalvarBreitt2', sans-serif;
+    margin: 0;
+    padding: 20px;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* Карта */
+.map {
     width: 100%;
+    height: 50vh;
+    margin-bottom: 30px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Заголовки */
+h1 {
+    color: var(--primary-color);
+    font-size: 24px;
+    margin: 20px 0 10px;
+    font-weight: 700;
+}
+
+/* Формы и инпуты */
+input[type="text"],
+input[type="file"],
+textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--light-text);
+    font-family: inherit;
+    font-size: 16px;
+}
+
+textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* Кнопки */
+button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    margin: 10px 5px;
+    border-radius: 4px;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s;
+}
+
+button:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+#backToGlav {
+    background-color: #333;
+}
+
+#openDeleteDialog,
+#cancelDeleteMark {
+    background-color: #e74c3c;
+}
+
+#openDeleteDialog:hover,
+#cancelDeleteMark:hover {
+    background-color: #c0392b;
+}
+
+/* Галерея фотографий */
+#gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+#gallery img {
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    transition: transform 0.3s;
+}
+
+#gallery img:hover {
+    transform: scale(1.05);
+}
+
+/* Секция отзывов */
+.review-section {
+    margin: 30px 0;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.review-title {
+    color: var(--primary-color);
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.review-item {
+    padding: 15px;
+    margin-bottom: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+}
+
+.review-rating {
+    color: #f1c40f;
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.review-author {
+    color: var(--gray-text);
+    font-size: 14px;
+    margin-top: 10px;
+    font-style: italic;
+}
+
+/* Рейтинг */
+.rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+    margin: 15px 0;
+}
+
+.rating input {
+    display: none;
+}
+
+.rating label {
+    font-size: 28px;
+    color: #444;
+    cursor: pointer;
+    padding: 0 5px;
+    transition: color 0.2s;
+}
+
+.rating input:checked~label,
+.rating label:hover,
+.rating label:hover~label {
+    color: #f1c40f;
+}
+
+/* Диалоговые окна */
+dialog {
+    background: var(--dark-bg);
+    color: var(--light-text);
+    border: 1px solid var(--primary-color);
+    border-radius: 8px;
+    padding: 25px;
+    max-width: 500px;
+    width: 90%;
+}
+
+dialog h1 {
+    margin-top: 0;
+    color: var(--light-text);
+}
+
+dialog::backdrop {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .map {
+        height: 40vh;
+    }
+
+    button {
+        width: 100%;
+        margin: 5px 0;
+    }
+}
+
+/* Скрытые элементы */
+[hidden] {
+    display: none !important;
+}
+
+
+/* Стили для блока с названием */
+.metka-title-section {
+    margin: 30px 0;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.metka-title-section h1 {
+    color: var(--primary-color);
+    font-size: 20px;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+#metka_info_title,
+#info_title {
+    font-size: 18px;
+    color: var(--light-text);
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+}
+
+/* Стили для блока с описанием */
+.metka-description-section {
+    margin: 30px 0;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.metka-description-section h1 {
+    color: var(--primary-color);
+    font-size: 20px;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.metka-description-section div,
+#info_description {
+    font-size: 16px;
+    color: var(--light-text);
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    line-height: 1.6;
+}
+
+/* Стили для блока с фотографиями */
+.metka-photos-section {
+    margin: 30px 0;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.metka-photos-section h1 {
+    color: var(--primary-color);
+    font-size: 20px;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.rewrite-data-metka{
+    display: flex;
+    flex-direction: column-reverse;
 }

@@ -139,8 +139,8 @@ def neiro_print(id_human, neiro_answer):
     message = collection_chat_neiro.find_one({"id_human": ObjectId(id_human)}, sort=[('_id', -1)])
     collection_chat_neiro.update_one({"_id": message["_id"]}, {"$set": {"neiro_answer": neiro_answer}})
 
-def insert_metka_pokritie(id_human, text, stars, x_coor, y_coor):
-    collection_metki_pokritie.insert_one({"id_human": ObjectId(id_human), "text": text, "stars": stars, "x_coor": x_coor,
+def insert_metka_pokritie(id_human, text, x_coor, y_coor):
+    collection_metki_pokritie.insert_one({"id_human": ObjectId(id_human), "text": text, "x_coor": x_coor,
                                           "y_coor": y_coor})
 
 def delete_metka_pokritie_db(id_human, id):

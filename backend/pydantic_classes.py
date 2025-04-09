@@ -28,7 +28,6 @@ class Text(BaseModel):
 
 class BodyMetkaPokritie(BaseModel):
     text: str
-    stars: int
     x_coor: float
     y_coor: float
 

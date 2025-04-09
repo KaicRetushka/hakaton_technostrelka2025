@@ -120,7 +120,7 @@ async def post_review(request: Request, id: str, message_text: str = Body(...), 
              tags=["Добавление метки покрытия"])
 async def post_metka_pokritie(request: Request, body: BodyMetkaPokritie):
     token = request.cookies.get(config.JWT_ACCESS_COOKIE_NAME)
-    insert_metka_pokritie(security._decode_token(token).sub, body.text, body.stars, body.x_coor, body.y_coor)
+    insert_metka_pokritie(security._decode_token(token).sub, body.text, body.x_coor, body.y_coor)
     return {"detail": "Метка покрытия добавлена"}
 
 @router.delete("/metka_pokritie/{id}", dependencies=[Depends(security.access_token_required)],

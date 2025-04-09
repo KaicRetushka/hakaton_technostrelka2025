@@ -472,6 +472,16 @@ async function check4G(is4GChecked) {
                     zoneType: '4G',  // Обязательно добавляем идентификатор
                     zoneId: item.id,
                 });
+                const zoneId = polygon.options.get('zoneId');
+                polygon.events.add("dblclick", async (e) => {
+                    e.preventDefault();
+                    console.log("click poligon")
+                    if (confirm("Уудалить покрытие")){
+                        myMap.geoObjects.remove(polygon);
+                        response = await fetch(`/pokritie/${zoneId}`, {method: "DELETE"})
+                    }
+                    
+                })
 
                 myMap.geoObjects.add(polygon);
             });
@@ -554,6 +564,16 @@ async function check3G(is3GChecked) {
                     zoneType: '3G',  // Обязательно добавляем идентификатор
                     zoneId: item.id,
                 });
+                const zoneId = polygon.options.get('zoneId');
+                polygon.events.add("dblclick", async (e) => {
+                    e.preventDefault();
+                    console.log("click poligon")
+                    if (confirm("Уудалить покрытие")){
+                        myMap.geoObjects.remove(polygon);
+                        response = await fetch(`/pokritie/${zoneId}`, {method: "DELETE"})
+                    }
+                    
+                })
                 myMap.geoObjects.add(polygon);
             });
 
@@ -633,7 +653,16 @@ async function check2G(is2GChecked) {
                     zoneType: '2G',  // Обязательно добавляем идентификатор
                     zoneId: item.id,
                 });
-
+                const zoneId = polygon.options.get('zoneId');
+                polygon.events.add("dblclick", async (e) => {
+                    e.preventDefault();
+                    console.log("click poligon")
+                    if (confirm("Уудалить покрытие")){
+                        myMap.geoObjects.remove(polygon);
+                        response = await fetch(`/pokritie/${zoneId}`, {method: "DELETE"})
+                    }
+                    
+                })
                 myMap.geoObjects.add(polygon);
             });
 

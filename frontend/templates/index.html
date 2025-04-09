@@ -153,9 +153,14 @@
             <button id="send_pokritie">Сохранить</button>
         </div>
     </dialog>
-
-
     <img src="/static/css/images/T2_Avatar_Primary.png" alt="" id="btn-open-neiro">
+    {% if is_reg == False%}
+    <script>
+        btn_open_neiro = document.getElementById("btn-open-neiro")
+        btn_open_neiro.onclick = () => alert("Зарегистрируйтесь чтобы общаться с ии асистенсом")
+    </script>
+    {% endif %}
+    
 
     <dialog id="ws_dialog" hx-ext="ws" ws-connect="/ws">
             <div class="ex-ney-blok"><button class="exit-neiro" id="exit-neiro">X</button></div>

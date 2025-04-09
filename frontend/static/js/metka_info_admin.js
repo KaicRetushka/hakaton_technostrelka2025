@@ -15,7 +15,19 @@ let changeCoords = document.querySelector('#changeCoords')
 let change = false
 let mapClickListener = null; // Ссылка на обработчик кликов
 let cancelChange = document.querySelector('#cancel_change')
+const deleteMarkDialog = document.querySelector('#deleteMarkDialog');
+const cancelDeleteMark = document.querySelector('#cancelDeleteMark');
+const openDeleteDialog = document.querySelector('#openDeleteDialog');
 
+
+
+openDeleteDialog.addEventListener('click', () => {
+    deleteMarkDialog.showModal()
+});
+
+cancelDeleteMark.addEventListener('click', () => {
+    deleteMarkDialog.close()
+});
 
 
 

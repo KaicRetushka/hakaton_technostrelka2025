@@ -1,4 +1,9 @@
-.map {
+#map {
+    height:  60vh;
+    width: 100%;
+}
+
+#map1 {
     height:  60vh;
     width: 100%;
 }

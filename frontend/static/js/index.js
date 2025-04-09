@@ -277,7 +277,10 @@ ymaps.ready(function () {
 
     showMark.addEventListener('click', async () => {
         showAllMark()
+        btnAddZone.textContent = "Добавить зону"
+        isAddingZone = false
     })
+
     async function addMark(title, coords, description){
     
         let formData = new FormData();

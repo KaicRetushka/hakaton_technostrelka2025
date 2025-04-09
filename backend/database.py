@@ -124,7 +124,7 @@ def select_chat_nero(id):
     messages = collection_chat_neiro.find({"id_human": ObjectId(id)})
     print({"id_human": ObjectId(id)})
     for message in messages:
-        html += f"<p>{message["human_question"] }</p><p>{ message["neiro_answer"]}</p>"
+        html += f"<p>{message['human_question'] }</p><p>{ message['neiro_answer']}</p>"
     html += "</div>"
     print(html)
     return html

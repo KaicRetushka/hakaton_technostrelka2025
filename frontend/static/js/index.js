@@ -1,5 +1,6 @@
 let showMark = document.querySelector('#show_mark_btn')
 let btnAddMark = document.querySelector('#add_mark_btn')
+let btnAddZone = document.querySelector('#add_zone_btn')
 let dialogAddMark = document.querySelector('#add_mark_dialog')
 let btnAddMarkCancel = document.querySelector('#add_mark_cancel')
 let btnAddMarkSave = document.querySelector('#add_mark_save')
@@ -10,9 +11,9 @@ const photoMark = document.querySelector('#photo_mark_input')
 const gallery = document.querySelector('#gallery')
 const btn_open_neiro = document.getElementById("btn-open-neiro")
 
-btn_open_neiro.addEventListener("click", () => {
-    document.getElementById("ws_dialog").showModal()
-})
+// btn_open_neiro.addEventListener("click", () => {
+//     document.getElementById("ws_dialog").showModal()
+// })
 
 
 function exitToTheGlav(event){
@@ -68,65 +69,166 @@ photoMark.addEventListener("change", (event) => {
 ymaps.ready(function () {
     // Создаём карту
     myMap = new ymaps.Map("map", {
-        center: [55.76, 37.64],  // Москва
+        center: [55.76, 37.64],
         zoom: 10
     });
 
-    let isAddingMode = false; // Режим добавления метки
+    let isAddingMark = false;
+    let isAddingZone = false;
+    let currentPolygon = null;
+    let polygonPoints = [];
 
-    if (btnAddMark != undefined){
-        // Включаем/выключаем режим добавления метки
-        btnAddMark.addEventListener('click', () => {
-            isAddingMode = !isAddingMode
-            btnAddMark.textContent = isAddingMode ? "Отменить" : "Добавить метку"
+    // Режим добавления зоны
+    if (btnAddZone != undefined) {
+        btnAddZone.addEventListener('click', () => {
+
+            myMap.geoObjects.removeAll()
+
+            isAddingZone = !isAddingZone;
+            isAddingMark = false; // Отключаем режим метки
+            btnAddZone.textContent = isAddingZone ? "Отменить" : "Добавить зону";
+            btnAddMark.textContent = "Добавить метку";
+            
+            if (isAddingZone) {
+                // Полный сброс предыдущего состояния
+                polygonPoints = [];
+                if (currentPolygon) {
+                    myMap.geoObjects.remove(currentPolygon);
+                    currentPolygon = null;
+                }
+                // Создаем новый полигон
+                currentPolygon = new ymaps.Polygon([], {}, {
+                    fillColor: '#1e98ff40',
+                    strokeColor: '#1e98ff',
+                    strokeWidth: 4,
+                    hintContent: "Новая зона"
+                });
+                myMap.geoObjects.add(currentPolygon);
+                alert('Кликайте на карте чтобы добавить вершины полигона. Двойной клик - завершить.');
+            } else {
+                // При отмене очищаем все
+                if (currentPolygon) {
+                    myMap.geoObjects.remove(currentPolygon);
+                    currentPolygon = null;
+                }
+                polygonPoints = [];
+            }
         });
     }
-    
-    // Обработчик клика по карте
-    myMap.events.add('click', function (e) {
-        if (!isAddingMode) return // Если режим выключен - ничего не делаем
 
-        dialogAddMark.showModal() // Показываем окно только в режиме добавления
+    // Режим добавления метки
+    if (btnAddMark != undefined) {
+        btnAddMark.addEventListener('click', () => {
 
-        btnAddMarkCancel.onclick = () => {
-            dialogAddMark.close()
-            isAddingMode = false // Отменяем режим
-            btnAddMark.textContent = "Добавить метку"
-        };
-
-        btnAddMarkSave.onclick = () => {
-            const coords = e.get('coords'); // Получаем координаты клика
+            isAddingMark = !isAddingMark;
+            isAddingZone = false; // Отключаем режим зоны
             
-            // Создаём метку
-            const placemark = new ymaps.Placemark(
-                coords,
-                {
-                    hintContent: nameMark.value
-                },
-                {
-                    preset: "islands#blackDotIcon"
-                }
-            );
+            // Очищаем полигон если был
+            if (currentPolygon) {
+                myMap.geoObjects.remove(currentPolygon);
+                currentPolygon = null;
+            }
+            polygonPoints = [];
+            
+            btnAddMark.textContent = isAddingMark ? "Отменить" : "Добавить метку";
+            btnAddZone.textContent = "Добавить зону";
+        });
+    }
 
-            let title = nameMark.value
-            let description = descriptionMark.value
-
-            addMark(title, coords, description)
-
-
-
-            myMap.geoObjects.add(placemark)
-            console.log(`Добавлена метка: ${nameMark.value} (${coords})`)
-
-            // Сбрасываем форму и режим
-            nameMark.value = ''
-            descriptionMark.value = ''
-            photoMark.value = ''
-            isAddingMode = false
-            btnAddMark.textContent = "Добавить метку"
-            dialogAddMark.close()
+    // Обработчик кликов по карте
+    myMap.events.add('click', function (e) {
+        const coords = e.get('coords');
+        
+        if (isAddingZone) {
+            // Добавляем точку в полигон
+            polygonPoints.push(coords);
+            
+            if (!currentPolygon) {
+                currentPolygon = new ymaps.Polygon([], {}, {
+                    fillColor: '#1e98ff40',
+                    strokeColor: '#1e98ff',
+                    strokeWidth: 4,
+                    hintContent: "Новая зона"
+                });
+                myMap.geoObjects.add(currentPolygon);
+            }
+            
+            currentPolygon.geometry.setCoordinates([polygonPoints]);
         }
-    })
+        else if (isAddingMark) {
+            dialogAddMark.showModal();
+
+            btnAddMarkCancel.onclick = () => {
+                dialogAddMark.close();
+                isAddingMark = false;
+                btnAddMark.textContent = "Добавить метку";
+            };
+
+            btnAddMarkSave.onclick = () => {
+                const placemark = new ymaps.Placemark(
+                    coords,
+                    {
+                        hintContent: nameMark.value
+                    },
+                    {
+                        preset: "islands#blackDotIcon"
+                    }
+                );
+
+                let title = nameMark.value;
+                let description = descriptionMark.value;
+
+                addMark(title, coords, description);
+
+                myMap.geoObjects.add(placemark);
+                console.log(`Добавлена метка: ${nameMark.value} (${coords})`);
+
+                // Сбрасываем форму
+                nameMark.value = '';
+                descriptionMark.value = '';
+                photoMark.value = '';
+                isAddingMark = false;
+                btnAddMark.textContent = "Добавить метку";
+                dialogAddMark.close();
+            }
+        }
+    });
+
+    // Завершение рисования полигона по двойному клику
+    myMap.events.add('dblclick', function() {
+        if (isAddingZone && polygonPoints.length >= 3) {
+            isAddingZone = false;
+            btnAddZone.textContent = "Добавить зону";
+            console.log('Координаты полигона:', polygonPoints);
+            
+            // Здесь можно добавить сохранение полигона на сервер
+            saveZone(polygonPoints);
+        }
+    });
+
+    async function saveZone(coords) {
+        try {
+            const response = await fetch('http://127.0.0.1:8000/zones', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    coordinates: coords,
+                    name: "Новая зона" // Можно добавить поле для имени
+                })
+            });
+            
+            const result = await response.json();
+            console.log('Зона сохранена:', result);
+        } catch (error) {
+            console.error('Ошибка сохранения зоны:', error);
+        }
+    }
+
+
+
+
 
     async function showAllMark() {
         try {
@@ -191,9 +293,9 @@ ymaps.ready(function () {
 
         response = await response.json()
         console.log('response: ', response)
+    }
 
-        showAllMark(myMap)     
-}
+
 })
 
 

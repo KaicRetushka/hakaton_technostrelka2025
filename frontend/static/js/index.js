@@ -438,14 +438,14 @@ async function check4G(is4GChecked) {
                 }
 
                 const polygon = new ymaps.Polygon([item.arr_coor], {
-                    fillColor: '#1e98ff',
-                    strokeColor: '#1e98ff',
-                    strokeWidth: 4,
+                    fillColor: '#ff1e1e',
+                    strokeColor: '#ff0000',
+                    strokeWidth: 0,
                     hintContent: "Зона покрытия 4G"
                 }, {
                     zoneType: '4G',  // Обязательно добавляем идентификатор
                     zoneId: item.id,
-                    preset: 'islands#bluePolygonIcon' // Добавляем иконку
+                    preset: 'islands#redPolygonIcon'  // Добавляем иконку
                 });
 
                 myMap.geoObjects.add(polygon);
@@ -515,17 +515,16 @@ async function check3G(is3GChecked) {
                     return;
                 }
 
-                const polygon = new ymaps.Polygon([item.arr_coor], {
-                    fillColor: '#1e98ff',
-                    strokeColor: '#1e98ff',
-                    strokeWidth: 4,
-                    hintContent: "Зона покрытия 3G"
-                }, {
+                let polygon = new ymaps.Polygon(
+                    [item.arr_coor]
+                , { hintContent: "Многоугольник" }, {
+                    fillColor: '#FF0000',
+                    interactivityModel: 'default#transparent',
+                    strokeWidth: 0,
+                    opacity: 0.5,
                     zoneType: '3G',  // Обязательно добавляем идентификатор
                     zoneId: item.id,
-                    preset: 'islands#bluePolygonIcon' // Добавляем иконку
                 });
-
                 myMap.geoObjects.add(polygon);
             });
 

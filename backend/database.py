@@ -170,5 +170,16 @@ def select_metki_pokritie(id_human):
                                        "is_my": is_my,"text": metka_pokritie["text"]})
     return metki_pokritie_arr
 
-def insert_pokritie(id_admin, type, arr_coor):
-    collection_pokritie.insert_one({"id_admin": ObjectId(id_admin), "type": type, "arr_coor": arr_coor})
+def insert_pokritie(type, arr_coor):
+    collection_pokritie.insert_one({"type": type, "arr_coor": arr_coor})
+
+def delete_pokritie_db(id):
+    collection_pokritie.delete_one({"_id": ObjectId(id)})
+
+def select_all_pokritia():
+    pokritia_arr = []
+    pokritia = collection_pokritie.find()
+    for pokritie in pokritia:
+        print(pokritie)
+        pokritia_arr.append({"id": str(pokritie["_id"]), "type": pokritie["type"], "arr_coor": pokritie["arr_coor"]})
+    return pokritia_arr

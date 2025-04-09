@@ -5,7 +5,8 @@ import base64
 
 from backend.database import (insert_user, check_user, check_admin, insert_metka, select_metki_for_index, update_login,
                               update_name, update_surname, update_photo, delete_metka_db, update_metka, insert_review,
-                              insert_metka_pokritie, delete_metka_pokritie_db, select_metki_pokritie, select_metka_info, insert_pokritie)
+                              insert_metka_pokritie, delete_metka_pokritie_db, select_metki_pokritie, select_metka_info, insert_pokritie,
+                              delete_pokritie_db, select_all_pokritia)
 from backend.jwt import config, security
 from backend.pydantic_classes import (BodyRegistration, ReturnAccessToken, BodyEnter, ReturnDetail, IndexMetka,
                                       BodyMetkaPokritie, DictMetkaPokrtitie, AddBodyPokritie)
@@ -148,5 +149,20 @@ async def post_pokritie(request: Request, body: AddBodyPokritie):
     data = check_admin(id_admin)
     if not(data):
         return HTTPException(status_code=400, detail="Вы не являеетесь администратором")
-    insert_pokritie(id_admin, body.type, body.arr_coor)
+    insert_pokritie(body.type, body.arr_coor)
     return {"detail": "Покрытие добавлено"}
+
+@router.delete("/pokritie/{id}",  dependencies=[Depends(security.access_token_required)], tags=["Удаление покрытия"])
+async def delete_pokritie(request: Request, id: str):
+    token = request.cookies.get(config.JWT_ACCESS_COOKIE_NAME)
+    id_admin = security._decode_token(token).sub
+    data = check_admin(id_admin)
+    if not(data):
+        return HTTPException(status_code=400, detail="Вы не являеетесь администратором")
+    delete_pokritie_db(id)
+    return {"detail": "Покрытие удалено"}
+
+@router.get("/all_pokritia", tags=["Получения всех покрытий"])
+async def get_all_pokritia():
+    pokritia_arr = select_all_pokritia()
+    return pokritia_arr

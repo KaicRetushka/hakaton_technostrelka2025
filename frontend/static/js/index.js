@@ -13,6 +13,12 @@ const btn_open_neiro = document.getElementById("btn-open-neiro")
 let addPokritieDialog = document.querySelector('#add_pokritie_dialog')
 let closePokritieDialog = document.querySelector('#close_pokritie_dialog')
 let sendPokritie = document.querySelector('#send_pokritie')
+const exit_neiro = document.getElementById("exit-neiro")
+
+exit_neiro.addEventListener("click", () => {
+    document.getElementById("ws_dialog").close()
+})
+
 
 
 // Получаем элементы чекбоксов
@@ -46,6 +52,9 @@ checkbox2G.addEventListener('change', function() {
 
 
 btn_open_neiro.addEventListener('click', () => {
+    chatConteiner = document.getElementById('chat-container');
+    console.log(chatConteiner)
+    chatConteiner.scrollTop = chatConteiner.scrollHeight;
     document.getElementById("ws_dialog").showModal()
 })
 

@@ -124,13 +124,18 @@ def add_question_neiro(id_human, human_question, neiro_answer):
 
 def select_chat_nero(id):
     print("a")
-    html = "<div style='overflow: auto; height: 78%; scrollbar-width: none; -ms-overflow-style: none; margin-top: 27px;'>"
+    html = "<div id='chat-container' style='overflow: auto; height: 78%; scrollbar-width: none; -ms-overflow-style: none; margin-top: 27px;'>"
     messages = collection_chat_neiro.find({"id_human": ObjectId(id)})
     print({"id_human": ObjectId(id)})
     for message in messages:
         html += f"<p class='human_question'>{message['human_question'] }</p><p class='neiro_answer'>{ message['neiro_answer']}</p>"
+    html += f'''
+    <script>
+        console.log("aaaaaaaa")
+        chatConteiner = document.getElementById('chat-container');
+        chatConteiner.scrollTop = chatConteiner.scrollHeight;
+    </script>'''
     html += "</div>"
-    print(html)
     return html
 
 def neiro_print(id_human, neiro_answer):

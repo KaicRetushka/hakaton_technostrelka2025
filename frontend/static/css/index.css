@@ -145,7 +145,7 @@
   #show_mark_btn, #add_mark_btn {
     position: absolute;
     bottom: 20px;
-    right: 20px;
+    left: 20px;
     z-index: 100;
     background-color: var(--primary-color);
     color: white;
@@ -303,3 +303,23 @@
       font-size: 12px;
     }
   }
+  
+  #ws_dialog{
+    position: absolute;
+    height: 400px;
+    width: 300px;
+    right: 15px;
+    bottom: 50px;
+  }
+
+  #btn-open-neiro {
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    top: calc(100vh - 80px);
+    right: 10px;
+}
+#btn-open-neiro:hover {
+  cursor: pointer;
+}

@@ -8,6 +8,11 @@ let descriptionMark = document.querySelector('#description_mark_input')
 let myMap
 const photoMark = document.querySelector('#photo_mark_input')
 const gallery = document.querySelector('#gallery')
+const btn_open_neiro = document.getElementById("btn-open-neiro")
+
+btn_open_neiro.addEventListener("click", () => {
+    document.getElementById("ws_dialog").showModal()
+})
 
 
 function exitToTheGlav(event){

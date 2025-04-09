@@ -120,7 +120,7 @@ def add_question_neiro(id_human, human_question, neiro_answer):
 
 def select_chat_nero(id):
     print("a")
-    html = "<div style='overflow: auto; height: 450px;'>"
+    html = "<div style='overflow: auto; height: 360px;'>"
     messages = collection_chat_neiro.find({"id_human": ObjectId(id)})
     print({"id_human": ObjectId(id)})
     for message in messages:

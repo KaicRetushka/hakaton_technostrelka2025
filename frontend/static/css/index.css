@@ -86,24 +86,34 @@ body {
   position: absolute;
   /* bottom: 20px; */
   left: 20px;
+  top: -1px;
   z-index: 100;
   display: flex;
-  background: var(--card-background);
+  background-color: #ffffff;
   border: 1px solid var(--border-color);
-  border-radius: 5px;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
   padding: 20px;
-  width: 320px;
+  width: 350px;
   backdrop-filter: blur(5px);
   flex-direction: column;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-start;
+  gap: 5px;
 }
 
 .coverage-card h1 {
   font-size: 20px;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
   font-weight: 700;
-  color: var(--primary-color);
+  color: #000000;
+}
+
+.label-checkbox-coverage-card {
+  width: 25px;
+  height: 15px;
+  color: #27ae60;
+  z-index: -10;
 }
 
 .coverage-card ul {
@@ -144,15 +154,42 @@ body {
   font-weight: 300;
 }
 
+.coverage-card label[for="4_G_check"] {
+  background-color: rgba(243, 179, 134, 0.5);
+  padding: 1px 7px;
+  border-radius: 5px;
+}
+
+.coverage-card label[for="3_G_check"] {
+  background-color: rgba(239, 135, 201, 0.5);
+  padding: 1px 7px;
+  border-radius: 5px;
+}
+
+.coverage-card label[for="2_G_check"] {
+  background-color: rgba(152, 107, 163, 0.5);
+  padding: 1px 7px;
+  border-radius: 5px;
+}
+
+.coverage-card label[for="show_mark_btn"] {
+  background-color: #6adaff;
+  padding: 1px 7px;
+  border-radius: 5px;
+}
+
 /* Кнопки управления */
-#show_mark_btn,/* Стили для чата Neo */
+#show_mark_btn,
+/* Стили для чата Neo */
 #chat-container {
-  padding: 15px;
-  background-color: var(--card-background);
+  padding: 5px;
+  /* background-color: rgb(255 255 255 / 80%); */
+  background-color: #ffffff;
   border: 1px solid var(--border-color);
-  border-radius: 8px;
-  color: var(--text-color);
+  border-radius: 5px;
+  color: #000000;
   font-family: 'HalvarBreitt2', sans-serif;
+  font-size: 16px;
 }
 
 .human_question {
@@ -193,10 +230,8 @@ body {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
+
 #add_mark_btn {
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
   z-index: 100;
   background-color: var(--primary-color);
   color: white;
@@ -210,7 +245,6 @@ body {
 }
 
 #add_mark_btn {
-  right: 160px;
   background-color: #333;
 }
 
@@ -543,4 +577,301 @@ body {
 #chat-container {
   scrollbar-width: none;
   -ms-overflow-style: none;
+}
+
+/* Основные стили диалогового окна */
+.dio {
+  width: 400px;
+  max-width: 90%;
+  padding: 25px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+  color: #000000;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  font-family: 'Rooftop', sans-serif;
+  font-size: 15px;
+}
+
+.dio h1 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  text-align: center;
+  font-family: 'HalvarBreitt2', sans-serif;
+}
+
+.dio div {
+  margin-bottom: 10px;
+  display: flex;
+}
+
+.dio p {
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+/* Стили для радио-кнопок */
+.dio input[type="radio"] {
+  display: none;
+}
+
+.dio label {
+  display: inline-block;
+  padding: 8px 15px;
+  margin-left: 10px;
+  background-color: rgba(255, 255, 255, 0.07);
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.dio input[type="radio"]:checked+label {
+  background-color: #A7FC00;
+  color: #080710;
+  font-weight: 500;
+}
+
+/* Стили для кнопок */
+.dio div:last-child {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.dio button {
+  padding: 12px 25px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Rooftop', sans-serif;
+}
+
+#close_pokritie_dialog {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+#close_pokritie_dialog:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+#send_pokritie {
+  background-color: #ffffff;
+  color: #080710;
+}
+
+#send_pokritie:hover {
+  background-color: rgba(167, 252, 0, 0.8);
+}
+
+/* Адаптация для мобильных устройств */
+@media (max-width: 480px) {
+  .dio {
+    padding: 20px 15px;
+  }
+
+  .dio div:last-child {
+    flex-direction: column;
+  }
+
+  .dio button {
+    width: 100%;
+  }
+}
+
+/* Стили для радио-кнопок */
+.dio input[type="radio"] {
+  display: none;
+}
+
+.dio label {
+  display: inline-block;
+  padding: 8px 15px;
+  margin-left: 10px;
+  background-color: rgba(255, 255, 255, 0.07);
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.dio input[type="radio"]:checked+label {
+  background-color: #A7FC00;
+  color: #080710;
+  font-weight: 500;
+}
+
+/* Стили для кнопок */
+.dio div:last-child {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.dio button {
+  padding: 12px 25px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#close_pokritie_dialog {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+#close_pokritie_dialog:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+#send_pokritie {
+  background-color: #ffffff;
+  color: #080710;
+}
+
+#send_pokritie:hover {
+  background-color: rgba(167, 252, 0, 0.8);
+}
+
+/* Адаптация для мобильных устройств */
+@media (max-width: 480px) {
+  .dio {
+    padding: 20px 15px;
+  }
+
+  .dio div:last-child {
+    flex-direction: column;
+  }
+
+  .dio button {
+    width: 100%;
+  }
+}
+
+.bottom-coverage-card {
+  position: absolute;
+  left: 15px;
+  bottom: 0px;
+  padding: 5px 10px;
+  width: 350px;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  background-color: #ffffff;
+  display: flex;
+  gap: 45px;
+  justify-content: center;
+}
+
+/* Стили для нижней карточки с кнопками */
+.bottom-coverage-card {
+  position: absolute;
+  left: 14px;
+  bottom: 0;
+  padding: 10px 15px;
+  width: 350px;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  background-color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.bottom-coverage-card button {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  font-family: 'HalvarBreitt2', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex: 1;
+  text-align: center;
+  color: #000000;
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+.bottom-coverage-card button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#add_zone_btn {
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  padding: 7px 10px;
+  border: 1px solid #000000;
+  border-radius: 8px;
+  font-family: 'HalvarBreitt2', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex: 1;
+  text-align: center;
+}
+
+#add_zone_btn:hover {
+  background-color: #2ecc71;
+}
+
+#add_mark_btn {
+  z-index: 100;
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  border: 1px solid #000000;
+  padding: 7px 10px;
+  padding: -10px 20px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+#add_mark_btn:hover {
+  background-color: #2980b9;
+}
+
+/* Адаптация для мобильных устройств */
+@media (max-width: 768px) {
+  .bottom-coverage-card {
+    width: calc(100% - 40px);
+    left: 20px;
+    bottom: 80px;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .bottom-coverage-card button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .bottom-coverage-card {
+    padding: 10px 15px;
+    bottom: 70px;
+  }
+
+  .bottom-coverage-card button {
+    padding: 10px 15px;
+    font-size: 13px;
+  }
 }

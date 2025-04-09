@@ -38,27 +38,21 @@
                 <h1>Карта покрытия</h1>
                 <div>
                     <p>
-                        <input 
-                            type="checkbox"
-                            id="4_G_check"
-                        />
+                        <input type="checkbox" id="4_G_check" />
                         <label for="4_G_check">4G</label>
-                    </p>
-                    
-                    <p>
-                        <input 
-                            type="checkbox"
-                            id="3_G_check"
-                        />
-                        <label for="3_G_check">3G</label>
+                    <p>Очень быстрый интернет, видео в высоком качестве</p>
                     </p>
 
                     <p>
-                        <input 
-                            type="checkbox"
-                            id="2_G_check"
-                        />
+                        <input type="checkbox" id="3_G_check" />
+                        <label for="3_G_check">3G</label>
+                    <p>Разговоры и интернет без ограничений, музыка и видео</p>
+                    </p>
+
+                    <p>
+                        <input type="checkbox" id="2_G_check" />
                         <label for="2_G_check">2G</label>
+                    <p>Телефонная связь, интернет для новостей и социальных сетей</p>
                     </p>
 
                     <p>
@@ -83,10 +77,10 @@
 
         {% if is_admin %}
 
-        
-        <button id="add_zone_btn">Добавить зону</button>
-        <button id="add_mark_btn">Добавить метку</button>
-
+        <div class="bottom-coverage-card">
+            <button id="add_zone_btn">Добавить зону</button>
+            <button id="add_mark_btn">Добавить метку</button>
+        </div>
         {% endif %}
 
     </div>
@@ -137,40 +131,24 @@
 
 
     <dialog id="add_pokritie_dialog" class="dio">
-        
+
         <h1>Создание покрытия</h1>
 
         <div>
             <p>Выберите тип связи:</p>
             <p>
-                <input 
-                    type="radio"
-                    id="4_G"
-                    value="4G"
-                    name="connection"
-                    checked
-                />
+                <input type="radio" id="4_G" value="4G" name="connection" checked />
                 <label for="4_G">4G</label>
             </p>
 
             <p>
-                <input 
-                    type="radio"
-                    id="3_G"
-                    value="3G"
-                    name="connection"
-                />
+                <input type="radio" id="3_G" value="3G" name="connection" />
                 <label for="3_G">3G</label>
             </p>
 
             <p>
-                <input 
-                    type="radio"
-                    id="2_G"
-                    value="2G"
-                    name="connection"
-                />
-                <label for="4_G">2G</label>
+                <input type="radio" id="2_G" value="2G" name="connection" />
+                <label for="2_G">2G</label>
             </p>
         </div>
 
@@ -189,16 +167,17 @@
     
 
     <dialog id="ws_dialog" hx-ext="ws" ws-connect="/ws">
-            <div class="ex-ney-blok"><button class="exit-neiro" id="exit-neiro">X</button></div>
-            <div id="message">
-                
-                {{ html_chat | safe }}
-                <form ws-send>
-                    <input name="text" placeholder="Введите запрос">
-                    <button><img src="/static/css/images/icons8-бумажный-самолетик-50.png" alt="" class="ws_dialog-button-image"></button>
-                </form>
-            </div>
-        
+        <div class="ex-ney-blok"><button class="exit-neiro" id="exit-neiro">X</button></div>
+        <div id="message">
+
+            {{ html_chat | safe }}
+            <form ws-send>
+                <input name="text" placeholder="Введите запрос">
+                <button><img src="/static/css/images/icons8-бумажный-самолетик-50.png" alt=""
+                        class="ws_dialog-button-image"></button>
+            </form>
+        </div>
+
     </dialog>
     <button id="metkaPokritieReview">Добавить отзыв</button>
     <script src="/static/js/index.js"></script>

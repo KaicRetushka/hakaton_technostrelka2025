@@ -121,50 +121,61 @@ function myFunc() {
     
     gallery.innerHTML = ''
 
-    for (let i = 0; i < files.length; i++){
-        
-        const reader = new FileReader()
-        
-        formData.append(`photos`, files[i])
-
+    for (let i = 0; i < files.length; i++) {
+        const reader = new FileReader();
+        formData.append(`photos`, files[i]);
+    
         reader.onload = function(e) {
-            const imgElement = document.createElement('img')
-            imgElement.src = e.target.result
-            imgElement.style.width = '100px'
-            imgElement.style.height = '100px'
-            imgElement.style.margin = '15px'
-            imgElement.style.objectFit = 'cover'
+            // Создаем контейнер для изображения
+            const container = document.createElement('div');
+            container.style.position = 'relative';
+            container.style.display = 'inline-block';
+            container.style.width = '250px'; // Фиксированная ширина контейнера
+            container.style.height = '250px'; // Фиксированная высота контейнера
+            container.style.margin = '15px';
+            container.style.overflow = 'hidden'; // Скрываем части изображения за пределами
+            container.style.borderRadius = '8px'; // Закругленные углы
+            container.style.flexShrink = '0'; // Запрещаем сжатие
+    
+            // Создаем само изображение
+            const imgElement = document.createElement('img');
+            imgElement.src = e.target.result;
+            imgElement.style.width = '100%'; // Занимает всю ширину контейнера
+            imgElement.style.height = '100%'; // Занимает всю высоту контейнера
+            imgElement.style.objectFit = 'cover'; // Заполняет контейнер с сохранением пропорций
+            imgElement.style.display = 'block'; // Убираем лишние отступы
             
-            // Добавляем кнопку удаления
-            const container = document.createElement('div')
-            container.style.position = 'relative'
-            container.style.display = 'inline-block'
+            // Кнопка удаления
+            const deleteBtn = document.createElement('button');
+            deleteBtn.textContent = '×';
+            deleteBtn.style.position = 'absolute';
+            deleteBtn.style.top = '-7px';
+            deleteBtn.style.right = '-5px';
+            deleteBtn.style.background = 'rgba(255, 0, 0, 0.7)';
+            deleteBtn.style.color = 'white';
+            deleteBtn.style.border = 'none';
+            deleteBtn.style.borderRadius = '50%';
+            deleteBtn.style.width = '24px';
+            deleteBtn.style.height = '44px';
+            deleteBtn.style.cursor = 'pointer';
+            deleteBtn.style.display = 'flex';
+            deleteBtn.style.justifyContent = 'center';
+            deleteBtn.style.alignItems = 'center';
+            deleteBtn.style.fontSize = '16px';
+            deleteBtn.style.zIndex = '2';
             
-            const deleteBtn = document.createElement('button')
-            deleteBtn.textContent = '×'
-            deleteBtn.style.position = 'absolute'
-            deleteBtn.style.top = '0'
-            deleteBtn.style.right = '0'
-            deleteBtn.style.background = 'red'
-            deleteBtn.style.color = 'white'
-            deleteBtn.style.border = 'none'
-            deleteBtn.style.borderRadius = '50%'
-            deleteBtn.style.cursor = 'pointer'
+            deleteBtn.addEventListener('click', (event) => {
+                event.stopPropagation();
+                container.remove();
+            });
             
-            deleteBtn.addEventListener('click', () => {
-                container.remove()
-            })
-            
-            container.appendChild(imgElement)
-            container.appendChild(deleteBtn)
-            gallery.appendChild(container)
+            container.appendChild(imgElement);
+            container.appendChild(deleteBtn);
+            gallery.appendChild(container);
         };
         
-        reader.readAsDataURL(files[i])
-        
-        console.log(files[i])
+        reader.readAsDataURL(files[i]);
     }
-
 }
 
 async function changeMark() {

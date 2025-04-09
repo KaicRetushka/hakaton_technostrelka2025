@@ -112,10 +112,13 @@
         <div id="not_galary" class="custom-file-input">
             <div id="gallery">
                 {%for photo in metka_info.photos%}
-                <img src="data:image/jpg;base64,{{ photo }}" alt="" style="height: 100px; width: 100px;">
+                <img src="data:image/jpg;base64,{{ photo }}" alt="" style="height: 250px; width: 250px;">
                 {%endfor%}
             </div>
-            <input id="photo_mark_input" type="file" accept="image/*" multiple><br>
+            <div class="refresh-file-img">
+                <input id="photo_mark_input" type="file" accept="image/*" multiple>
+                <img src="/static/css/images/icons8-обновление-50.png" alt="" class="img-refresh">
+            </div><br>
         </div>
     </div>
 
@@ -142,7 +145,6 @@
     </dialog>
 
     <br>
-    <button id="backToGlav" onclick="location.href='/'">Назад</button>
     <button id="openDeleteDialog" type="button">Удалить метку</button>
     <button id="saveChange">Сохранить</button>
     <script src="/static/js/metka_info_admin.js"></script>
@@ -177,7 +179,7 @@
         <h1>Фотографии</h1>
         <div>
             {%for photo in metka_info.photos%}
-            <img src="data:image/jpg;base64,{{ photo }}" alt="" style="height: 100px; width: 100px;">
+            <img src="data:image/jpg;base64,{{ photo }}" alt="" style="height: 250px; width: 250px;">
             {%endfor%}
         </div>
     </div>

@@ -22,8 +22,8 @@ body {
 /* Карта */
 .map {
     width: 100%;
-    height: 50vh;
-    margin-bottom: 30px;
+    height: 400px;
+    margin-bottom: 15px;
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
@@ -280,7 +280,99 @@ dialog::backdrop {
     font-weight: 700;
 }
 
-.rewrite-data-metka{
+.rewrite-data-metka {
     display: flex;
     flex-direction: column-reverse;
 }
+
+.refresh-file-img {
+    position: relative;
+    display: inline-block;
+}
+
+#photo_mark_input {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    opacity: 0;
+    z-index: 2;
+    cursor: pointer;
+}
+
+.img-refresh {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: #ffffff;
+    padding: 5px;
+    border-radius: 50%;
+    display: block;
+    position: relative;
+    z-index: 1;
+}
+
+.img-refresh:hover {
+    transform: rotate(90deg) scale(1.1);
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+#gallery {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 10px;
+    margin-bottom: 15px;
+    max-height: 270px;
+    max-width: 100%;
+    overflow-x: auto; /* Горизонтальный скролл при необходимости */
+    overflow-y: hidden; /* Скрываем вертикальный скролл */
+    scrollbar-width: thin; /* Для Firefox */
+    scrollbar-color: #27ae60 #333; /* Для Firefox */
+    padding-bottom: 10px; /* Чтобы скролл не наезжал на контент */
+  }
+  
+  /* Стилизация скроллбара для Chrome/Safari */
+  #gallery::-webkit-scrollbar {
+    height: 8px;
+  }
+  
+  #gallery::-webkit-scrollbar-track {
+    background: #333;
+    border-radius: 4px;
+  }
+  
+  #gallery::-webkit-scrollbar-thumb {
+    background-color: #27ae60;
+    border-radius: 4px;
+  }
+  
+  /* Стили для отдельных элементов галереи */
+  .gallery-item {
+    flex: 0 0 auto; /* Запрещаем элементам сжиматься/растягиваться */
+    width: 250px; /* Фиксированная ширина элемента */
+    height: 250px; /* Фиксированная высота элемента */
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    background-color: #111;
+  }
+  
+  /* Запрещаем выход содержимого за пределы элемента */
+  .gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+  
+  /* Эффекты при наведении */
+  .gallery-item:hover img {
+    transform: scale(1.05);
+  }
+  
+  /* Скрытие элементов за пределами блока */
+  #gallery-wrapper {
+    width: 100%;
+    overflow: hidden; /* Скрываем всё, что выходит за границы */
+    position: relative;
+  }

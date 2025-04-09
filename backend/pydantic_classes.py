@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import List
 
 class BodyRegistration(BaseModel):
     login: str
@@ -38,3 +39,7 @@ class DictMetkaPokrtitie(BaseModel):
     y_coor: float
     is_my: bool
     text: str
+
+class AddBodyPokritie(BaseModel):
+    type: str
+    arr_coor: List[tuple[float, float]]

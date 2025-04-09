@@ -1,14 +1,14 @@
-from fastapi import APIRouter, Response, Form, Request, Depends, UploadFile, File, HTTPException, Query
+from fastapi import APIRouter, Response, Form, Request, Depends, UploadFile, File, HTTPException, Query, Body
 from fastapi.responses import HTMLResponse
 from typing import List
 import base64
 
 from backend.database import (insert_user, check_user, check_admin, insert_metka, select_metki_for_index, update_login,
                               update_name, update_surname, update_photo, delete_metka_db, update_metka, insert_review,
-                              insert_metka_pokritie, delete_metka_pokritie_db, select_metki_pokritie)
+                              insert_metka_pokritie, delete_metka_pokritie_db, select_metki_pokritie, select_metka_info, insert_pokritie)
 from backend.jwt import config, security
 from backend.pydantic_classes import (BodyRegistration, ReturnAccessToken, BodyEnter, ReturnDetail, IndexMetka,
-                                      BodyMetkaPokritie, DictMetkaPokrtitie)
+                                      BodyMetkaPokritie, DictMetkaPokrtitie, AddBodyPokritie)
 from backend.router_routing import router_routing
 
 router = APIRouter()
@@ -106,13 +106,13 @@ async def put_metka(request: Request, id: str, title: str = Query(...), x_coor: 
     raise HTTPException(status_code=400, detail="Неверный id метки")
 
 @router.post("/metka/{id}/review", dependencies=[Depends(security.access_token_required)],
-             tags=["Добавление отзыва к маршруту"])
-async def post_review(request: Request, id: str, message_text = Form(...), stars: int = Form(...)):
+             tags=["Добавление отзыва к метке"])
+async def post_review(request: Request, id: str, message_text: str = Body(...), stars: int = Body(...)):
     token = request.cookies.get(config.JWT_ACCESS_COOKIE_NAME)
     data = insert_review(id, message_text, stars, security._decode_token(token).sub)
     if data:
-        return {"detail": "Отзыв добавлен"}
-    raise HTTPException(status_code=400, detail="Неверный id маршрута")
+        return select_metka_info(id)["review_arr"]
+    raise HTTPException(status_code=400, detail="Неверный id метки")
 
 @router.post("/metka_pokritie", dependencies=[Depends(security.access_token_required)],
              tags=["Добавление метки покрытия"])
@@ -140,3 +140,13 @@ async def get_metki_poktitie(request: Request) -> List[DictMetkaPokrtitie]:
         id_human = None
     metki_pokritie_arr = select_metki_pokritie(id_human)
     return metki_pokritie_arr
+
+@router.post("/pokritie", dependencies=[Depends(security.access_token_required)], tags=["Добавление покрытия"])
+async def post_pokritie(request: Request, body: AddBodyPokritie):
+    token = request.cookies.get(config.JWT_ACCESS_COOKIE_NAME)
+    id_admin = security._decode_token(token).sub
+    data = check_admin(id_admin)
+    if not(data):
+        return HTTPException(status_code=400, detail="Вы не являеетесь администратором")
+    insert_pokritie(id_admin, body.type, body.arr_coor)
+    return {"detail": "Покрытие добавлено"}

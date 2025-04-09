@@ -9,6 +9,7 @@ collection_users = db["collection_users"]
 collection_metki = db["collection_metki"]
 collection_chat_neiro = db["collection_chat_neiro"]
 collection_metki_pokritie = db["collection_metki_pokritie"]
+collection_pokritie = db["collection_pokritie"]
 
 def insert_user(login, password, name, surname):
     if collection_users.count_documents({"login": login}) > 0:
@@ -109,9 +110,12 @@ def update_metka(id, title, x_coor, y_coor, description, photos_arr):
 def insert_review(id, message_text, stars, user_id):
     if not(collection_metki.find_one({"_id": ObjectId(id)})):
         return False
+    user = collection_users.find_one({"_id": ObjectId(user_id)})
+    print(user)
+    fullname = user["surname"] + " " + user["name"]
     collection_metki.update_one({"_id": ObjectId(id)},
                                 {"$push": {"review_arr":
-                                               {"message_text": message_text, "stars": stars, "user_id": user_id}}})
+                                               {"message_text": message_text, "stars": stars, "fullname": fullname}}})
     return True
 
 def add_question_neiro(id_human, human_question, neiro_answer):
@@ -165,3 +169,6 @@ def select_metki_pokritie(id_human):
                                        "x_coor": metka_pokritie["x_coor"], "y_coor": metka_pokritie["y_coor"],
                                        "is_my": is_my,"text": metka_pokritie["text"]})
     return metki_pokritie_arr
+
+def insert_pokritie(id_admin, type, arr_coor):
+    collection_pokritie.insert_one({"id_admin": ObjectId(id_admin), "type": type, "arr_coor": arr_coor})

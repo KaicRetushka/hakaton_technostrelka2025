@@ -35,15 +35,18 @@ async def give_lead_str(request: Request):
 
 @router_routing.get("/metka/{id}", tags=["Получение всей информации о метке metka_info{id, title, x_coor, y_coor, description, photos, review_arr, avg_star}"])
 async def get_metka_id(request: Request, id: str):
+    is_reg = False
     try:
         token = request.cookies.get(config.JWT_ACCESS_COOKIE_NAME)
+        if token:
+            is_reg = True
         is_admin = check_admin(security._decode_token(token).sub)
     except:
         is_admin = False
     metka_info = select_metka_info(id)
 
     return templates.TemplateResponse("metka_info.html", {"request": request, "is_admin": is_admin,
-                                                     "metka_info": metka_info})
+                                                     "metka_info": metka_info, "is_reg": is_reg})
 
 @router_routing.get("/edit_profile", dependencies=[Depends(security.access_token_required)],
                     tags=["Получение страницы изменения информации о пользователе. Этот запрос содержит объект user_info = {login, password, name, surname, avatar_src}"])

@@ -16,7 +16,7 @@ let sendPokritie = document.querySelector('#send_pokritie')
 const exit_neiro = document.getElementById("exit-neiro")
 
 exit_neiro.addEventListener("click", () => {
-    document.getElementById("ws_modal").close()
+    document.getElementById("ws_dialog").close()
 })
 
 

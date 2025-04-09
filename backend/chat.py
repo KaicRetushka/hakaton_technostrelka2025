@@ -48,14 +48,14 @@ async def ws(websocket: WebSocket):
                         {html}
                         <form ws-send>
                             <input name="text" placeholder="Введите запрос">
-                            <button disabled>Отправить</button>
+                            <button disabled><img src="/static/css/images/icons8-бумажный-самолетик-50.png" alt="" class="ws_dialog-button-image"></button>
                         </form>
                     <div>
                 ''')
                 await asyncio.sleep(0.01)
             html = select_chat_nero(id_human)
             await websocket.send_text(f'''<div id="message">
-                        <div>{html}</div>
+                        {html}
                         <form ws-send>
                             <input name="text" placeholder="Введите запрос">
                             <button>Отправить</button>

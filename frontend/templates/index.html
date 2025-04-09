@@ -9,6 +9,7 @@
     <script src="https://unpkg.com/htmx.org@1.9.3"></script>
     <script src="https://unpkg.com/htmx-ext-ws@2.0.2"></script>
     <link rel="stylesheet" href="/static/css/index.css">
+    <link rel="stylesheet" href="/static/css/fonts.css">
 </head>
 
 <body>
@@ -92,15 +93,20 @@
         </div>
     </dialog>
     <img src="/static/css/images/T2_Avatar_Primary.png" alt="" id="btn-open-neiro">
+
     <dialog id="ws_dialog" hx-ext="ws" ws-connect="/ws">
-        <div id="message">
-            {{ html_chat | safe }}
-            <form ws-send>
-                <input name="text" placeholder="Введите запрос">
-                <button>Отправить</button>
-            </form>
-        </div>
+            <div class="ex-ney-blok"><button class="exit-neiro">X</button></div>
+            <div id="message">
+                
+                {{ html_chat | safe }}
+                <form ws-send>
+                    <input name="text" placeholder="Введите запрос">
+                    <button><img src="/static/css/images/icons8-бумажный-самолетик-50.png" alt="" class="ws_dialog-button-image"></button>
+                </form>
+            </div>
+        
     </dialog>
+
     <script src="/static/js/index.js"></script>
 </body>
 

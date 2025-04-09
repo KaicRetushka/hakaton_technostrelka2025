@@ -26,7 +26,7 @@ async def ws(websocket: WebSocket):
                     {html}
                     <form ws-send>
                         <input name="text" placeholder="Введите запрос">
-                        <button disabled>Отправить</button>
+                        <button disabled><img src="/static/css/images/icons8-бумажный-самолетик-50.png" alt="" class="ws_dialog-button-image"></button>
                     </form>
                 <div>
             ''')
@@ -58,7 +58,7 @@ async def ws(websocket: WebSocket):
                         {html}
                         <form ws-send>
                             <input name="text" placeholder="Введите запрос">
-                            <button>Отправить</button>
+                            <button><img src="/static/css/images/icons8-бумажный-самолетик-50.png" alt="" class="ws_dialog-button-image"></button>
                         </form>
                     <div>''')
     except WebSocketDisconnect:

@@ -39,23 +39,26 @@
                 <div>
                     <p>
                         <input 
-                        type="checkbox"
-                        id="4_G_check"
-                    />
+                            type="checkbox"
+                            id="4_G_check"
+                        />
+                        <label for="4_G_check">4G</label>
                     </p>
                     
                     <p>
                         <input 
-                        type="checkbox"
-                        id="3_G_check"
+                            type="checkbox"
+                            id="3_G_check"
                         />
+                        <label for="3_G_check">3G</label>
                     </p>
 
                     <p>
                         <input 
-                        type="checkbox"
-                        id="2_G_check"
+                            type="checkbox"
+                            id="2_G_check"
                         />
+                        <label for="2_G_check">2G</label>
                     </p>
                 </div>
             </div>
@@ -149,7 +152,7 @@
     <img src="/static/css/images/T2_Avatar_Primary.png" alt="" id="btn-open-neiro">
 
     <dialog id="ws_dialog" hx-ext="ws" ws-connect="/ws">
-            <div class="ex-ney-blok"><button class="exit-neiro">X</button></div>
+            <div class="ex-ney-blok"><button class="exit-neiro" id="exit-neiro">X</button></div>
             <div id="message">
                 
                 {{ html_chat | safe }}

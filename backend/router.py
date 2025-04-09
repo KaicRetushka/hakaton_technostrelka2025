@@ -6,7 +6,8 @@ import base64
 from backend.database import (insert_user, check_user, check_admin, insert_metka, select_metki_for_index, update_login,
                               update_name, update_surname, update_photo, delete_metka_db, update_metka, insert_review,
                               insert_metka_pokritie, delete_metka_pokritie_db, select_metki_pokritie, select_metka_info, insert_pokritie,
-                              delete_pokritie_db, select_all_pokritia, select_all_pokritia_2g, select_all_pokritia_3g, select_all_pokritia_4g)
+                              delete_pokritie_db, select_all_pokritia, select_all_pokritia_2g, select_all_pokritia_3g, select_all_pokritia_4g,
+                              update_password)
 from backend.jwt import config, security
 from backend.pydantic_classes import (BodyRegistration, ReturnAccessToken, BodyEnter, ReturnDetail, IndexMetka,
                                       BodyMetkaPokritie, DictMetkaPokrtitie, AddBodyPokritie)
@@ -182,3 +183,12 @@ async def get_all_pokritia_4g():
     pokritia_arr = select_all_pokritia_4g()
     return pokritia_arr
 
+@router.put("/user/password", dependencies=[Depends(security.access_token_required)], 
+            tags=["Изменение пароля пользователя"])
+async def put_user_password(request: Request, old_password: str = Form(...), 
+                            new_password: str = Form(...)) -> ReturnDetail:
+    token = request.cookies.get(config.JWT_ACCESS_COOKIE_NAME)
+    data = update_password(security._decode_token(token).sub, old_password, new_password)
+    if data:
+        return {"detail": "Пароль изменён"}
+    raise HTTPException(status_code=404, detail="Неверный старый пароль")

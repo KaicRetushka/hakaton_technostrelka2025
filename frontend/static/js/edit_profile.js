@@ -5,7 +5,7 @@ function changeInfo(event) {
 
     console.log('Что не так')
     if(status === 200){
-        location.href = '/lich_kab'
+        location.href = '/'
         console.log('Изменения успешно сохранены')
     } else {
         alert('Что-то пошло не так')

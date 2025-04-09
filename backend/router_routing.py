@@ -54,3 +54,8 @@ async def give_edit_profile_str(request: Request):
     token = request.cookies.get(config.JWT_ACCESS_COOKIE_NAME)
     user_info = select_user_all(security._decode_token(token).sub)
     return templates.TemplateResponse("edit_profile.html", {"request": request, "user_info": user_info})
+
+@router_routing.get("/password", dependencies=[Depends(security.access_token_required)],
+                    tags=["Получение стракницы изменения пароля"])
+async def password(request: Request):
+    return templates.TemplateResponse("password.html", {"request": request})

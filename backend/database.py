@@ -203,3 +203,16 @@ def select_all_pokritia_4g():
     for pokritie in pokritia:
         pokritia_arr.append({"id": str(pokritie["_id"]), "type": pokritie["type"], "arr_coor": pokritie["arr_coor"]})
     return pokritia_arr
+
+def check_password(id, old_password):
+    user = collection_users.find_one({"_id": ObjectId(id), "password": old_password})
+    if user:
+        return True
+    return False
+
+def update_password(id, old_password, new_password):
+    data = check_password(id, old_password)
+    if data:
+        collection_users.update_one({"_id": ObjectId(id)}, {"$set": {"password": new_password}})
+        return True
+    return False

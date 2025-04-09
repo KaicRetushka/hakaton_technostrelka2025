@@ -19,7 +19,7 @@
 
             {% if is_reg %}
             <div class="autoriz-polz">
-                <button id="fullname" class="fullname">{{ fullname }}</button>
+                <button id="fullname" class="fullname" onclick="window.location='/edit_profile'">{{ fullname }}</button>
                 <button id="button_glav_exit" type="submit" hx-delete="/exit" hx-swap="none"
                     hx-on:htmx:after-request="exitToTheGlav(event)">Выйти</button>
 

@@ -15,6 +15,35 @@ let closePokritieDialog = document.querySelector('#close_pokritie_dialog')
 let sendPokritie = document.querySelector('#send_pokritie')
 
 
+// Получаем элементы чекбоксов
+const checkbox4G = document.getElementById('4_G_check');
+const checkbox3G = document.getElementById('3_G_check');
+const checkbox2G = document.getElementById('2_G_check');
+
+// Создаём переменные, которые будут хранить текущее состояние
+let is4GChecked = checkbox4G.checked;
+let is3GChecked = checkbox3G.checked;
+let is2GChecked = checkbox2G.checked;
+
+// Добавляем обработчики событий для обновления переменных
+checkbox4G.addEventListener('change', function() {
+  is4GChecked = this.checked
+  check4G(is4GChecked)
+  console.log('4G:', is4GChecked)
+});
+
+checkbox3G.addEventListener('change', function() {
+  is3GChecked = this.checked
+  check3G(is3GChecked)
+  console.log('3G:', is3GChecked)
+});
+
+checkbox2G.addEventListener('change', function() {
+  is2GChecked = this.checked
+  check2G(is2GChecked)
+  console.log('2G:', is2GChecked)
+});
+
 
 btn_open_neiro.addEventListener('click', () => {
     document.getElementById("ws_dialog").showModal()
@@ -24,7 +53,9 @@ closePokritieDialog.addEventListener('click', () => {
     addPokritieDialog.close()
     btnAddZone.textContent = "Добавить зону"
     isAddingZone = false
-    myMap.geoObjects.removeAll()
+    if (currentPolygon) {
+        myMap.geoObjects.remove(currentPolygon)
+    }
 })
 
 function exitToTheGlav(event){
@@ -77,46 +108,12 @@ photoMark.addEventListener("change", (event) => {
 
 
 
-ymaps.ready(function () {
+ymaps.ready(async function () {
     // Создаём карту
     myMap = new ymaps.Map("map", {
         center: [55.76, 37.64],
         zoom: 10
     });
-
-
-
-
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            function (position) {
-                const latitude = position.coords.latitude;
-                const longitude = position.coords.longitude;
-
-                console.log("Ваши координаты:", latitude, longitude);
-
-                // Перемещаем карту на найденные координаты
-                myMap.setCenter([latitude, longitude]);
-
-                // Можно добавить метку
-                const placemark1 = new ymaps.Placemark([latitude, longitude], {
-                    hintContent: "Вы здесь!",
-                    balloonContent: `Широта: ${latitude}, Долгота: ${longitude}`
-                });
-                myMap.geoObjects.add(placemark1);
-            },
-            function (error) {
-                console.error("Ошибка геолокации:", error.message);
-                alert("Не удалось определить ваше местоположение.");
-            }
-        );
-    } else {
-        alert("Ваш браузер не поддерживает геолокацию.");
-    }
-
-
-
-
 
     let isAddingMark = false;
     let isAddingZone = false;
@@ -143,7 +140,7 @@ ymaps.ready(function () {
                 }
                 // Создаем новый полигон
                 currentPolygon = new ymaps.Polygon([], {}, {
-                    fillColor: '#1e98ff40',
+                    fillColor: '#1e98ff',
                     strokeColor: '#1e98ff',
                     strokeWidth: 4,
                     hintContent: "Новая зона"
@@ -179,6 +176,41 @@ ymaps.ready(function () {
             btnAddZone.textContent = "Добавить зону";
         });
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // Обработчик кликов по карте
     myMap.events.add('click', function (e) {
@@ -251,6 +283,12 @@ ymaps.ready(function () {
 
     sendPokritie.addEventListener('click', () => {
         saveZone(polygonPoints);
+        if (currentPolygon) {
+            myMap.geoObjects.remove(currentPolygon);
+        }
+        addPokritieDialog.close()
+        btnAddZone.textContent = "Добавить зону"
+        isAddingZone = false
     })
 
     async function saveZone(coords) {
@@ -348,6 +386,245 @@ ymaps.ready(function () {
 
 
 })
+
+
+
+
+
+
+async function check4G(is4GChecked) {
+    if (!myMap) {
+        console.error("Карта не инициализирована");
+        return;
+    }
+
+    if (is4GChecked) {
+        try {
+            const response = await fetch('/all_pokritia/4G', {
+                headers: {'Content-Type': 'application/json'}
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log('Данные о покрытии 4G:', data);
+
+            // Сначала удаляем ВСЕ существующие полигоны 4G
+            const objectsToRemove = [];
+            myMap.geoObjects.each(geoObject => {
+                if (geoObject instanceof ymaps.Polygon && 
+                    geoObject.options.get('zoneType') === '4G') {
+                    objectsToRemove.push(geoObject);
+                }
+            });
+            
+            objectsToRemove.forEach(obj => myMap.geoObjects.remove(obj));
+
+            // Добавляем новые полигоны
+            data.forEach(item => {
+                if (!item.arr_coor || !Array.isArray(item.arr_coor)) {
+                    console.error('Некорректные данные координат:', item);
+                    return;
+                }
+
+                const polygon = new ymaps.Polygon([item.arr_coor], {
+                    fillColor: '#1e98ff',
+                    strokeColor: '#1e98ff',
+                    strokeWidth: 4,
+                    hintContent: "Зона покрытия 4G"
+                }, {
+                    zoneType: '4G',  // Обязательно добавляем идентификатор
+                    zoneId: item.id,
+                    preset: 'islands#bluePolygonIcon' // Добавляем иконку
+                });
+
+                myMap.geoObjects.add(polygon);
+            });
+
+        } catch (error) {
+            console.error('Ошибка при загрузке зон 4G:', error);
+            alert('Ошибка загрузки зон 4G: ' + error.message);
+        }
+    } else {
+        // Удаляем ВСЕ полигоны 4G (более надежный способ)
+        const objectsToRemove = [];
+        myMap.geoObjects.each(geoObject => {
+            if (geoObject instanceof ymaps.Polygon && 
+                geoObject.options.get('zoneType') === '4G') {
+                objectsToRemove.push(geoObject);
+            }
+        });
+        
+        objectsToRemove.forEach(obj => {
+            myMap.geoObjects.remove(obj);
+            console.log('Удален полигон 4G:', obj.options.get('zoneId'));
+        });
+    }
+}
+
+
+
+
+
+
+
+async function check3G(is3GChecked) {
+    if (!myMap) {
+        console.error("Карта не инициализирована");
+        return;
+    }
+
+    if (is3GChecked) {
+        try {
+            const response = await fetch('/all_pokritia/3G', {
+                headers: {'Content-Type': 'application/json'}
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log('Данные о покрытии 3G:', data);
+
+            // Сначала удаляем ВСЕ существующие полигоны 3G
+            const objectsToRemove = [];
+            myMap.geoObjects.each(geoObject => {
+                if (geoObject instanceof ymaps.Polygon && 
+                    geoObject.options.get('zoneType') === '3G') {
+                    objectsToRemove.push(geoObject);
+                }
+            });
+            
+            objectsToRemove.forEach(obj => myMap.geoObjects.remove(obj));
+
+            // Добавляем новые полигоны
+            data.forEach(item => {
+                if (!item.arr_coor || !Array.isArray(item.arr_coor)) {
+                    console.error('Некорректные данные координат:', item);
+                    return;
+                }
+
+                const polygon = new ymaps.Polygon([item.arr_coor], {
+                    fillColor: '#1e98ff',
+                    strokeColor: '#1e98ff',
+                    strokeWidth: 4,
+                    hintContent: "Зона покрытия 3G"
+                }, {
+                    zoneType: '3G',  // Обязательно добавляем идентификатор
+                    zoneId: item.id,
+                    preset: 'islands#bluePolygonIcon' // Добавляем иконку
+                });
+
+                myMap.geoObjects.add(polygon);
+            });
+
+        } catch (error) {
+            console.error('Ошибка при загрузке зон 3G:', error);
+            alert('Ошибка загрузки зон 3G: ' + error.message);
+        }
+    } else {
+        // Удаляем ВСЕ полигоны 3G (более надежный способ)
+        const objectsToRemove = [];
+        myMap.geoObjects.each(geoObject => {
+            if (geoObject instanceof ymaps.Polygon && 
+                geoObject.options.get('zoneType') === '3G') {
+                objectsToRemove.push(geoObject);
+            }
+        });
+        
+        objectsToRemove.forEach(obj => {
+            myMap.geoObjects.remove(obj);
+            console.log('Удален полигон 3G:', obj.options.get('zoneId'));
+        });
+    }
+}
+
+
+
+
+
+
+
+
+
+async function check2G(is2GChecked) {
+    if (!myMap) {
+        console.error("Карта не инициализирована");
+        return;
+    }
+
+    if (is2GChecked) {
+        try {
+            const response = await fetch('/all_pokritia/2G', {
+                headers: {'Content-Type': 'application/json'}
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log('Данные о покрытии 2G:', data);
+
+            // Сначала удаляем ВСЕ существующие полигоны 2G
+            const objectsToRemove = [];
+            myMap.geoObjects.each(geoObject => {
+                if (geoObject instanceof ymaps.Polygon && 
+                    geoObject.options.get('zoneType') === '2G') {
+                    objectsToRemove.push(geoObject);
+                }
+            });
+            
+            objectsToRemove.forEach(obj => myMap.geoObjects.remove(obj));
+
+            // Добавляем новые полигоны
+            data.forEach(item => {
+                if (!item.arr_coor || !Array.isArray(item.arr_coor)) {
+                    console.error('Некорректные данные координат:', item);
+                    return;
+                }
+
+                const polygon = new ymaps.Polygon([item.arr_coor], {
+                    fillColor: '#1e98ff',
+                    strokeColor: '#1e98ff',
+                    strokeWidth: 4,
+                    hintContent: "Зона покрытия 2G"
+                }, {
+                    zoneType: '2G',  // Обязательно добавляем идентификатор
+                    zoneId: item.id,
+                    preset: 'islands#bluePolygonIcon' // Добавляем иконку
+                });
+
+                myMap.geoObjects.add(polygon);
+            });
+
+        } catch (error) {
+            console.error('Ошибка при загрузке зон 2G:', error);
+            alert('Ошибка загрузки зон 2G: ' + error.message);
+        }
+    } else {
+        // Удаляем ВСЕ полигоны 2G (более надежный способ)
+        const objectsToRemove = [];
+        myMap.geoObjects.each(geoObject => {
+            if (geoObject instanceof ymaps.Polygon && 
+                geoObject.options.get('zoneType') === '2G') {
+                objectsToRemove.push(geoObject);
+            }
+        });
+        
+        objectsToRemove.forEach(obj => {
+            myMap.geoObjects.remove(obj);
+            console.log('Удален полигон 2G:', obj.options.get('zoneId'));
+        });
+    }
+}
+
+
+
+
 
 
 //FETCH-запрос для создания метки 

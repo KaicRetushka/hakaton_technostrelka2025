@@ -69,7 +69,7 @@
 
     <dialog id="add_mark_dialog">
 
-        <h1>Информация о метке</h1>
+        <h1>Создание метки</h1>
 
         <div>
             <p>Название</p>
@@ -92,6 +92,53 @@
             <button id="add_mark_save">Сохранить</button>
         </div>
     </dialog>
+
+
+    <dialog id="add_pokritie_dialog" class="dio">
+        
+        <h1>Создание покрытия</h1>
+
+        <div>
+            <p>Выберите тип связи:</p>
+            <p>
+                <input 
+                    type="radio"
+                    id="4_G"
+                    value="4G"
+                    name="connection"
+                    checked
+                />
+                <label for="4_G">4G</label>
+            </p>
+
+            <p>
+                <input 
+                    type="radio"
+                    id="3_G"
+                    value="3G"
+                    name="connection"
+                />
+                <label for="3_G">3G</label>
+            </p>
+
+            <p>
+                <input 
+                    type="radio"
+                    id="2_G"
+                    value="2G"
+                    name="connection"
+                />
+                <label for="4_G">2G</label>
+            </p>
+        </div>
+
+        <div>
+            <button id="close_pokritie_dialog">Отменить</button>
+            <button id="send_pokritie">Сохранить</button>
+        </div>
+    </dialog>
+
+
     <img src="/static/css/images/T2_Avatar_Primary.png" alt="" id="btn-open-neiro">
 
     <dialog id="ws_dialog" hx-ext="ws" ws-connect="/ws">

@@ -10,11 +10,22 @@ let myMap
 const photoMark = document.querySelector('#photo_mark_input')
 const gallery = document.querySelector('#gallery')
 const btn_open_neiro = document.getElementById("btn-open-neiro")
+let addPokritieDialog = document.querySelector('#add_pokritie_dialog')
+let closePokritieDialog = document.querySelector('#close_pokritie_dialog')
+let sendPokritie = document.querySelector('#send_pokritie')
 
-btn_open_neiro.addEventListener("click", () => {
+
+
+btn_open_neiro.addEventListener('click', () => {
     document.getElementById("ws_dialog").showModal()
 })
 
+closePokritieDialog.addEventListener('click', () => {
+    addPokritieDialog.close()
+    btnAddZone.textContent = "Добавить зону"
+    isAddingZone = false
+    myMap.geoObjects.removeAll()
+})
 
 function exitToTheGlav(event){
     const status = event.detail.xhr.status
@@ -200,27 +211,30 @@ ymaps.ready(function () {
             isAddingZone = false;
             btnAddZone.textContent = "Добавить зону";
             console.log('Координаты полигона:', polygonPoints);
-            
-            // Здесь можно добавить сохранение полигона на сервер
-            saveZone(polygonPoints);
+            addPokritieDialog.showModal()
         }
     });
 
+    sendPokritie.addEventListener('click', () => {
+        saveZone(polygonPoints);
+    })
+
     async function saveZone(coords) {
         try {
-            const response = await fetch('http://127.0.0.1:8000/zones', {
+
+            const type_connection = document.querySelector('input[name="connection"]:checked').value
+
+            let response = await fetch('http://127.0.0.1:8000/pokritie', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
-                    coordinates: coords,
-                    name: "Новая зона" // Можно добавить поле для имени
+                    type: type_connection,
+                    arr_coor: coords
                 })
             });
             
-            const result = await response.json();
-            console.log('Зона сохранена:', result);
+            response = await response.json();
+            console.log('Зона сохранена:', response);
         } catch (error) {
             console.error('Ошибка сохранения зоны:', error);
         }

@@ -1,5 +1,7 @@
-const showMarkCheckbox = document.querySelector('#show_mark_btn')
+const showMarkCheckbox = document.querySelector('#show_mark_checkbox')
+const showReviewCheckbox = document.querySelector('#show_review_checkbox')
 let salonPlacemarks = []
+let reviewPlacemarks = []
 let btnAddMark = document.querySelector('#add_mark_btn')
 let btnAddZone = document.querySelector('#add_zone_btn')
 let dialogAddMark = document.querySelector('#add_mark_dialog')
@@ -15,6 +17,13 @@ let addPokritieDialog = document.querySelector('#add_pokritie_dialog')
 let closePokritieDialog = document.querySelector('#close_pokritie_dialog')
 let sendPokritie = document.querySelector('#send_pokritie')
 const exit_neiro = document.getElementById("exit-neiro")
+let metkaPokritieReview = document.querySelector('#metkaPokritieReview')
+let addReviewDialog = document.querySelector('#add_review_dialog')
+let descriptionReview = document.querySelector('#description_review_input')
+let btnAddReviewCancel = document.querySelector('#add_review_cancel')
+let btnAddReviewSave = document.querySelector('#add_review_save')
+
+
 
 exit_neiro.addEventListener("click", () => {
     document.getElementById("ws_dialog").close()
@@ -63,9 +72,7 @@ closePokritieDialog.addEventListener('click', () => {
     addPokritieDialog.close()
     btnAddZone.textContent = "Добавить зону"
     isAddingZone = false
-    if (currentPolygon) {
-        myMap.geoObjects.remove(currentPolygon)
-    }
+    myMap.geoObjects.removeAll()
 })
 
 function exitToTheGlav(event){
@@ -116,13 +123,6 @@ photoMark.addEventListener("change", (event) => {
 })
 
 
-let is_metka_pokritie = false
-
-const btn_metka_pokritie = document.getElementById("btn_metka_pokritie")
-btn_metka_pokritie.addEventListener("click", () => {
-    is_metka_pokritie = true
-})
-
 ymaps.ready(async function () {
     // Создаём карту
     myMap = new ymaps.Map("map", {
@@ -132,6 +132,7 @@ ymaps.ready(async function () {
 
     let isAddingMark = false;
     let isAddingZone = false;
+    let isAddingReview = false;
     let currentPolygon = null;
     let polygonPoints = [];
 
@@ -142,13 +143,17 @@ ymaps.ready(async function () {
             checkbox4G.checked = false
             checkbox3G.checked = false
             checkbox2G.checked = false
+            showMarkCheckbox.checked = false
+            showReviewCheckbox.checked = false
 
             myMap.geoObjects.removeAll()
 
             isAddingZone = !isAddingZone;
             isAddingMark = false; // Отключаем режим метки
+            isAddingReview = false;
             btnAddZone.textContent = isAddingZone ? "Отменить" : "Добавить зону";
             btnAddMark.textContent = "Добавить метку";
+            metkaPokritieReview.textContent = "Добавить отзыв"
             
             if (isAddingZone) {
                 // Полный сброс предыдущего состояния
@@ -184,6 +189,7 @@ ymaps.ready(async function () {
 
             isAddingMark = !isAddingMark;
             isAddingZone = false; // Отключаем режим зоны
+            isAddingReview = false;
             
             // Очищаем полигон если был
             if (currentPolygon) {
@@ -194,6 +200,28 @@ ymaps.ready(async function () {
             
             btnAddMark.textContent = isAddingMark ? "Отменить" : "Добавить метку";
             btnAddZone.textContent = "Добавить зону";
+        });
+    }
+
+
+    // 1. Добавляем обработчик для кнопки "Добавить отзыв"
+    if (metkaPokritieReview != undefined) {
+        metkaPokritieReview.addEventListener('click', () => {
+            isAddingReview = !isAddingReview;
+            isAddingZone = false;
+            isAddingMark = false;
+            
+            if (currentPolygon) {
+                myMap.geoObjects.remove(currentPolygon);
+                currentPolygon = null;
+            }
+            
+            polygonPoints = [];
+            
+            // Изменяем текст кнопки в зависимости от состояния
+            metkaPokritieReview.textContent = isAddingReview ? "Отменить" : "Добавить отзыв";
+            btnAddZone.textContent = "Добавить зону";
+            btnAddMark.textContent = "Добавить метку";
         });
     }
 
@@ -227,7 +255,7 @@ ymaps.ready(async function () {
 
 
     // Обработчик кликов по карте
-    myMap.events.add('click', function (e) {
+    myMap.events.add('click', function(e) {
         const coords = e.get('coords');
         
         if (isAddingZone) {
@@ -284,7 +312,53 @@ ymaps.ready(async function () {
                 dialogAddMark.close();
             }
         }
+        else if (isAddingReview) {
+            addReviewDialog.showModal();
+            
+            btnAddReviewCancel.onclick = () => {
+                isAddingReview = false;
+                metkaPokritieReview.textContent = "Добавить отзыв";
+                addReviewDialog.close();
+                descriptionReview.value = ''
+            };
+            
+            btnAddReviewSave.onclick = async () => {
+                const description = descriptionReview.value;
+                
+                if (!description) {
+                    alert('Введите текст отзыва');
+                    return;
+                }
+                
+                // Создаем метку с отзывом
+                const placemark = new ymaps.Placemark(
+                    coords,
+                    {
+                        hintContent: "Отзыв о покрытии",
+                        balloonContent: description
+                    },
+                    {
+                        preset: "islands#greenDotIcon",
+                        balloonCloseButton: true,
+                        hideIconOnBalloonOpen: false
+                    }
+                );
+                
+                myMap.geoObjects.add(placemark);
+                
+                addReview(coords, description)
+
+                isAddingReview = false;
+                metkaPokritieReview.textContent = "Добавить отзыв";
+                descriptionReview.value = ''
+
+                addReviewDialog.close();
+            };
+        }
     });
+
+
+
 
     // Завершение рисования полигона по двойному клику
     myMap.events.add('dblclick', function() {
@@ -336,6 +410,7 @@ ymaps.ready(async function () {
         }
         btnAddZone.textContent = "Добавить зону";
         isAddingZone = false;
+        isAddingReview = false;
     });
 
 
@@ -415,6 +490,107 @@ ymaps.ready(async function () {
 
         response = await response.json()
         console.log('response: ', response)
+    }
+
+
+
+
+
+
+
+
+
+
+    showReviewCheckbox.addEventListener('change', async function() {
+        if (this.checked) {
+            await showAllReview();
+        } else {
+            hideAllReview();
+        }
+        btnAddZone.textContent = "Добавить зону";
+        isAddingZone = false;
+        isAddingMark = false;
+    });
+
+    async function showAllReview() {
+        try {
+            // Сначала удаляем все существующие метки отзывов
+            hideAllReview();
+            
+            const response = await fetch('/metki_poktitie', {
+                headers: {'Content-Type': 'application/json'}
+            });
+    
+            if (!response.ok) throw new Error(`Ошибка HTTP: ${response.status}`);
+    
+            const marks = await response.json();
+            console.log('Полученные метки отзывов:', marks);
+
+
+            if (!Array.isArray(marks)) throw new Error('Ожидался массив меток');
+         
+            // Создаем и сохраняем новые метки
+            reviewPlacemarks = marks.map(mark => {
+                const placemark = new ymaps.Placemark(
+                    [mark.x_coor, mark.y_coor],
+                    {
+                        hintContent: mark.title || 'Салон связи',
+                        balloonContent: mark.text
+                    },
+                    {
+                        preset: "islands#greenDotIcon", 
+                        iconColor: '#009900' 
+                    }
+                );
+    
+                myMap.geoObjects.add(placemark);
+                return placemark;
+            });
+    
+        } catch (error) {
+            console.error('Ошибка при загрузке отзывов:', error);
+            alert('Ошибка загрузки отзывов: ' + error.message);
+            showReviewCheckbox.checked = false;
+        }
+    }
+
+
+    function hideAllReview() {
+        reviewPlacemarks.forEach(placemark => {
+            myMap.geoObjects.remove(placemark);
+        });
+        reviewPlacemarks = [];
+        console.log('Вы спрятали салоны связи')
+    }
+
+
+
+
+    async function addReview(coords, description) {
+        try {
+            let response = await fetch('/metka_pokritie', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    text: description,
+                    x_coor: coords[0],
+                    y_coor: coords[1]
+                })
+            });
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            response = await response.json()
+            console.log('Добавление отзыва: ', response)
+
+        } catch (error) {
+            console.error('Ошибка при добавлении отзыва:', error);
+            throw error;
+        }
     }
 
 

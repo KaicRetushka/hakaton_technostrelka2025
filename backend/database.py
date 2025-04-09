@@ -2,7 +2,7 @@ import pymongo
 import base64
 from bson import ObjectId
 
-client = pymongo.MongoClient() #host="150.241.72.55"
+client = pymongo.MongoClient(host="150.241.72.55") #host="150.241.72.55"
 db = client["technostrelka_db"]
 
 collection_users = db["collection_users"]

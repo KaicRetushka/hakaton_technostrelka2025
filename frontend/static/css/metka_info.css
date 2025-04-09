@@ -376,3 +376,15 @@ dialog::backdrop {
     overflow: hidden; /* Скрываем всё, что выходит за границы */
     position: relative;
   }
+
+  .avatar {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+  }
+
+  .avatarAndName{
+    display: flex;
+    gap: 15px;
+    margin-bottom: 5px;
+  }

@@ -2,7 +2,7 @@ import pymongo
 import base64
 from bson import ObjectId
 
-client = pymongo.MongoClient(host="150.241.72.55")
+client = pymongo.MongoClient() #host="150.241.72.55"
 db = client["technostrelka_db"]
 
 collection_users = db["collection_users"]
@@ -98,7 +98,6 @@ def update_metka(id, title, x_coor, y_coor, description, photos_arr):
         return False
     
     if photos_arr:
-        print("yes")
         collection_metki.update_one({"_id": ObjectId(id)}, {"$set": {"title": title, "x_coor": x_coor,
                                                              "y_coor": y_coor, "description": description,
                                                              "photos": photos_arr}})
@@ -111,11 +110,11 @@ def insert_review(id, message_text, stars, user_id):
     if not(collection_metki.find_one({"_id": ObjectId(id)})):
         return False
     user = collection_users.find_one({"_id": ObjectId(user_id)})
-    print(user)
     fullname = user["surname"] + " " + user["name"]
+    avatar_src = user["avatar_src"]
     collection_metki.update_one({"_id": ObjectId(id)},
                                 {"$push": {"review_arr":
-                                               {"message_text": message_text, "stars": stars, "fullname": fullname}}})
+                                               {"message_text": message_text, "stars": stars, "fullname": fullname, "avatar_src": avatar_src}}})
     return True
 
 def add_question_neiro(id_human, human_question, neiro_answer):
@@ -123,10 +122,8 @@ def add_question_neiro(id_human, human_question, neiro_answer):
                                       "neiro_answer": neiro_answer})
 
 def select_chat_nero(id):
-    print("a")
     html = "<div id='chat-container' style='overflow: auto; height: 78%; scrollbar-width: none; -ms-overflow-style: none; margin-top: 27px;'>"
     messages = collection_chat_neiro.find({"id_human": ObjectId(id)})
-    print({"id_human": ObjectId(id)})
     for message in messages:
         html += f"<p class='human_question'>{message['human_question'] }</p><p class='neiro_answer'>{ message['neiro_answer']}</p>"
     html += f'''

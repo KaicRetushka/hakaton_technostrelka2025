@@ -205,9 +205,13 @@
     <div id="allMessage">
         {% for review in metka_info.review_arr %}
         <div class="review-item">
-            <div class="review-rating">Рейтинг: {{ '★' * review.stars }}</div>
+            <div class="avatarAndName">
+                <img src="data:image/jpg;base64,{{review.avatar_src}}" class="avatar" alt="">
+                <div class="review-author">Автор: {{ review.fullname or 'Аноним' }}</div>
+            </div>
+            
             <div class="review-text">{{ review.message_text }}</div>
-            <div class="review-author">Автор: {{ review.fullname or 'Аноним' }}</div>
+            <div class="review-rating">Рейтинг: {{ '★' * review.stars }}</div>
             <hr>
         </div>
         {% endfor %}
@@ -285,9 +289,12 @@
                                 const reviewElement = document.createElement('div');
                                 reviewElement.className = 'review-item';
                                 reviewElement.innerHTML = `
-                            <div class="review-rating">Рейтинг: ${'★'.repeat(review.stars)}</div>
+                            <div class="avatarAndName">
+                                <img src="data:image/jpg;base64,${review.avatar_src}" class="avatar" alt="">
+                                <div class="review-author">Автор: ${review.fullname || 'Аноним'}</div>
+                            </div>
                             <div class="review-text">${review.message_text}</div>
-                            <div class="review-author">Автор: ${review.fullname || 'Аноним'}</div>
+                            <div class="review-rating">Рейтинг: ${'★'.repeat(review.stars)}</div>
                             <hr>
                         `;
                                 allMessage.appendChild(reviewElement);

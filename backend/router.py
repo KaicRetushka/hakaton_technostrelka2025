@@ -6,7 +6,7 @@ import base64
 from backend.database import (insert_user, check_user, check_admin, insert_metka, select_metki_for_index, update_login,
                               update_name, update_surname, update_photo, delete_metka_db, update_metka, insert_review,
                               insert_metka_pokritie, delete_metka_pokritie_db, select_metki_pokritie, select_metka_info, insert_pokritie,
-                              delete_pokritie_db, select_all_pokritia)
+                              delete_pokritie_db, select_all_pokritia, select_all_pokritia_2g, select_all_pokritia_3g, select_all_pokritia_4g)
 from backend.jwt import config, security
 from backend.pydantic_classes import (BodyRegistration, ReturnAccessToken, BodyEnter, ReturnDetail, IndexMetka,
                                       BodyMetkaPokritie, DictMetkaPokrtitie, AddBodyPokritie)
@@ -166,3 +166,19 @@ async def delete_pokritie(request: Request, id: str):
 async def get_all_pokritia():
     pokritia_arr = select_all_pokritia()
     return pokritia_arr
+
+@router.get("/all_pokritia/2G", tags=["Получения 2G покрытий"])
+async def get_all_pokritia_2g():
+    pokritia_arr = select_all_pokritia_2g()
+    return pokritia_arr
+
+@router.get("/all_pokritia/3G", tags=["Получения 3G покрытий"])
+async def get_all_pokritia_3g():
+    pokritia_arr = select_all_pokritia_3g()
+    return pokritia_arr
+
+@router.get("/all_pokritia/4G", tags=["Получения 4G покрытий"])
+async def get_all_pokritia_4g():
+    pokritia_arr = select_all_pokritia_4g()
+    return pokritia_arr
+

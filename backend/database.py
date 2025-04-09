@@ -180,6 +180,26 @@ def select_all_pokritia():
     pokritia_arr = []
     pokritia = collection_pokritie.find()
     for pokritie in pokritia:
-        print(pokritie)
+        pokritia_arr.append({"id": str(pokritie["_id"]), "type": pokritie["type"], "arr_coor": pokritie["arr_coor"]})
+    return pokritia_arr
+
+def select_all_pokritia_2g():
+    pokritia_arr = []
+    pokritia = collection_pokritie.find({"type": "2G"})
+    for pokritie in pokritia:
+        pokritia_arr.append({"id": str(pokritie["_id"]), "type": pokritie["type"], "arr_coor": pokritie["arr_coor"]})
+    return pokritia_arr
+
+def select_all_pokritia_3g():
+    pokritia_arr = []
+    pokritia = collection_pokritie.find({"type": "3G"})
+    for pokritie in pokritia:
+        pokritia_arr.append({"id": str(pokritie["_id"]), "type": pokritie["type"], "arr_coor": pokritie["arr_coor"]})
+    return pokritia_arr
+
+def select_all_pokritia_4g():
+    pokritia_arr = []
+    pokritia = collection_pokritie.find({"type": "4G"})
+    for pokritie in pokritia:
         pokritia_arr.append({"id": str(pokritie["_id"]), "type": pokritie["type"], "arr_coor": pokritie["arr_coor"]})
     return pokritia_arr

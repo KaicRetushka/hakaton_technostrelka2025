@@ -1,4 +1,5 @@
-let showMark = document.querySelector('#show_mark_btn')
+const showMarkCheckbox = document.querySelector('#show_mark_btn')
+let salonPlacemarks = []
 let btnAddMark = document.querySelector('#add_mark_btn')
 let btnAddZone = document.querySelector('#add_zone_btn')
 let dialogAddMark = document.querySelector('#add_mark_dialog')
@@ -138,6 +139,10 @@ ymaps.ready(async function () {
     if (btnAddZone != undefined) {
         btnAddZone.addEventListener('click', () => {
 
+            checkbox4G.checked = false
+            checkbox3G.checked = false
+            checkbox2G.checked = false
+
             myMap.geoObjects.removeAll()
 
             isAddingZone = !isAddingZone;
@@ -154,8 +159,9 @@ ymaps.ready(async function () {
                 }
                 // Создаем новый полигон
                 currentPolygon = new ymaps.Polygon([], {}, {
-                    fillColor: '#1e98ff',
-                    strokeColor: '#1e98ff',
+                    fillColor: '#1e98ff40',
+                    strokeColor: '#1e98ff40',
+                    
                     strokeWidth: 4,
                     hintContent: "Новая зона"
                 });
@@ -231,7 +237,7 @@ ymaps.ready(async function () {
             if (!currentPolygon) {
                 currentPolygon = new ymaps.Polygon([], {}, {
                     fillColor: '#1e98ff40',
-                    strokeColor: '#1e98ff',
+                    strokeColor: '#1e98ff40',
                     strokeWidth: 4,
                     hintContent: "Новая зона"
                 });
@@ -253,6 +259,7 @@ ymaps.ready(async function () {
                 const placemark = new ymaps.Placemark(
                     coords,
                     {
+                        ////////////////////////
                         hintContent: nameMark.value
                     },
                     {
@@ -321,59 +328,77 @@ ymaps.ready(async function () {
     }
 
 
-
+    showMarkCheckbox.addEventListener('change', async function() {
+        if (this.checked) {
+            await showAllMark();
+        } else {
+            hideAllSalons();
+        }
+        btnAddZone.textContent = "Добавить зону";
+        isAddingZone = false;
+    });
 
 
     async function showAllMark() {
         try {
-            myMap.geoObjects.removeAll();
-    
-            let response = await fetch('http://127.0.0.1:8000/metki', {
+            // Сначала удаляем все существующие метки салонов
+            hideAllSalons();
+            
+            const response = await fetch('http://127.0.0.1:8000/metki', {
                 headers: {'Content-Type': 'application/json'}
             });
     
-            if (!response.ok) {
-                throw new Error(`Ошибка HTTP: ${response.status}`);
-            }
+            if (!response.ok) throw new Error(`Ошибка HTTP: ${response.status}`);
     
             const marks = await response.json();
             console.log('Полученные метки:', marks);
-    
-            // Проверяем, что marks - массив
-            if (!Array.isArray(marks)) {
-                throw new Error('Ожидался массив меток');
-            }
-     
-            marks.forEach(mark => {
-    
+
+
+            if (!Array.isArray(marks)) throw new Error('Ожидался массив меток');
+         
+            // Создаем и сохраняем новые метки
+            salonPlacemarks = marks.map(mark => {
                 const placemark = new ymaps.Placemark(
                     [mark.x_coor, mark.y_coor],
                     {
-                        hintContent: mark.title || 'Без названия'
+                        hintContent: mark.title || 'Салон связи',
+                        balloonContent: `
+                            <b>${mark.title || 'Салон связи'}</b><br>
+                            ${mark.description || ''}
+                            ${mark.photos ? mark.photos.map(photo => 
+                                `<img src="${photo.url}" width="100">`).join('') : ''}`
                     },
                     {
-                        preset: "islands#blackDotIcon"
+                        preset: "islands#blackDotIcon", // Специальная иконка для салонов
+                        iconColor: '#000000' // Красный цвет для отличия
                     }
-                )
-
-                placemark.events.add('click', function() {
+                );
+    
+                placemark.events.add('click', () => {
                     window.location.href = `/metka/${mark.id}`;
-                })
+                });
     
                 myMap.geoObjects.add(placemark);
-            })
+                return placemark;
+            });
     
         } catch (error) {
-            console.error('Ошибка при загрузке меток:', error);
-            alert('Ошибка при загрузке меток: ' + error.message);
+            console.error('Ошибка при загрузке салонов:', error);
+            alert('Ошибка загрузки салонов: ' + error.message);
+            showMarkCheckbox.checked = false;
         }
     }
 
-    showMark.addEventListener('click', async () => {
-        showAllMark()
-        btnAddZone.textContent = "Добавить зону"
-        isAddingZone = false
-    })
+
+    function hideAllSalons() {
+        salonPlacemarks.forEach(placemark => {
+            myMap.geoObjects.remove(placemark);
+        });
+        salonPlacemarks = [];
+        console.log('Вы спрятали салоны связи')
+    }
+
+    
 
     async function addMark(title, coords, description){
     
@@ -437,15 +462,15 @@ async function check4G(is4GChecked) {
                     return;
                 }
 
-                const polygon = new ymaps.Polygon([item.arr_coor], {
-                    fillColor: '#ff1e1e',
-                    strokeColor: '#ff0000',
+                let polygon = new ymaps.Polygon(
+                    [item.arr_coor]
+                , { hintContent: "Многоугольник" }, {
+                    fillColor: '#F3B38680',
+                    interactivityModel: 'default#transparent',
                     strokeWidth: 0,
-                    hintContent: "Зона покрытия 4G"
-                }, {
+                    opacity: 1.0,
                     zoneType: '4G',  // Обязательно добавляем идентификатор
                     zoneId: item.id,
-                    preset: 'islands#redPolygonIcon'  // Добавляем иконку
                 });
 
                 myMap.geoObjects.add(polygon);
@@ -471,6 +496,10 @@ async function check4G(is4GChecked) {
         });
     }
 }
+
+
+
+
 
 
 
@@ -518,10 +547,10 @@ async function check3G(is3GChecked) {
                 let polygon = new ymaps.Polygon(
                     [item.arr_coor]
                 , { hintContent: "Многоугольник" }, {
-                    fillColor: '#FF0000',
+                    fillColor: '#EF87C980',
                     interactivityModel: 'default#transparent',
                     strokeWidth: 0,
-                    opacity: 0.5,
+                    opacity: 1.0,
                     zoneType: '3G',  // Обязательно добавляем идентификатор
                     zoneId: item.id,
                 });
@@ -594,15 +623,15 @@ async function check2G(is2GChecked) {
                     return;
                 }
 
-                const polygon = new ymaps.Polygon([item.arr_coor], {
-                    fillColor: '#1e98ff',
-                    strokeColor: '#1e98ff',
-                    strokeWidth: 4,
-                    hintContent: "Зона покрытия 2G"
-                }, {
+                let polygon = new ymaps.Polygon(
+                    [item.arr_coor]
+                , { hintContent: "Многоугольник" }, {
+                    fillColor: '#986BA380',
+                    interactivityModel: 'default#transparent',
+                    strokeWidth: 0,
+                    opacity: 1.0,
                     zoneType: '2G',  // Обязательно добавляем идентификатор
                     zoneId: item.id,
-                    preset: 'islands#bluePolygonIcon' // Добавляем иконку
                 });
 
                 myMap.geoObjects.add(polygon);

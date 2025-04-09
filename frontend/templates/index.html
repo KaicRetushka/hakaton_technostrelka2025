@@ -36,21 +36,28 @@
         <div class="map">
             <div class="coverage-card">
                 <h1>Карта покрытия</h1>
-                <ul>
-                    <li data-checked="false">город, адрес или метро</li>
-                    <li data-checked="true">
-                        4G
-                        <p>Очень быстрый интернет, видео в высоком качестве</p>
-                    </li>
-                    <li data-checked="true">
-                        3G
-                        <p>Разговоры и интернет без ограничений, музыка и видео</p>
-                    </li>
-                    <li data-checked="true">
-                        2G
-                        <p>Телефонная связь, интернет для новостей и социальных сетей</p>
-                    </li>
-                </ul>
+                <div>
+                    <p>
+                        <input 
+                        type="checkbox"
+                        id="4_G_check"
+                    />
+                    </p>
+                    
+                    <p>
+                        <input 
+                        type="checkbox"
+                        id="3_G_check"
+                        />
+                    </p>
+
+                    <p>
+                        <input 
+                        type="checkbox"
+                        id="2_G_check"
+                        />
+                    </p>
+                </div>
             </div>
             <div id="map"></div>
         </div>

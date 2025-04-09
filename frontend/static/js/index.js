@@ -84,6 +84,40 @@ ymaps.ready(function () {
         zoom: 10
     });
 
+
+
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            function (position) {
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
+
+                console.log("Ваши координаты:", latitude, longitude);
+
+                // Перемещаем карту на найденные координаты
+                myMap.setCenter([latitude, longitude]);
+
+                // Можно добавить метку
+                const placemark1 = new ymaps.Placemark([latitude, longitude], {
+                    hintContent: "Вы здесь!",
+                    balloonContent: `Широта: ${latitude}, Долгота: ${longitude}`
+                });
+                myMap.geoObjects.add(placemark1);
+            },
+            function (error) {
+                console.error("Ошибка геолокации:", error.message);
+                alert("Не удалось определить ваше местоположение.");
+            }
+        );
+    } else {
+        alert("Ваш браузер не поддерживает геолокацию.");
+    }
+
+
+
+
+
     let isAddingMark = false;
     let isAddingZone = false;
     let currentPolygon = null;

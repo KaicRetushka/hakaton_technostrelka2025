@@ -76,14 +76,25 @@
             <div id="map"></div>
         </div>
 
-        {% if is_admin %}
-
         <div class="bottom-coverage-card">
-            <button id="add_zone_btn">Добавить зону</button>
-            <button id="add_mark_btn">Добавить метку</button>
-            <button id="metkaPokritieReview">Добавить отзыв</button>
+           
+            
+        
+
+            {% if is_admin %}
+
+                <button id="add_zone_btn">Добавить зону</button>
+                <button id="add_mark_btn">Добавить метку</button>
+            
+            {% endif %}
+
+            {% if is_reg%}
+
+                <button id="metkaPokritieReview">Добавить отзыв</button>
+
+            {% endif %}
+
         </div>
-        {% endif %}
 
     </div>
 

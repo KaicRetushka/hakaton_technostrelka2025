@@ -344,8 +344,6 @@ ymaps.ready(async function () {
                     }
                 );
                 
-                myMap.geoObjects.add(placemark);
-                
                 addReview(coords, description)
 
                 isAddingReview = false;
@@ -534,7 +532,7 @@ ymaps.ready(async function () {
                 const placemark = new ymaps.Placemark(
                     [mark.x_coor, mark.y_coor],
                     {
-                        hintContent: mark.title || 'Салон связи',
+                        hintContent: 'Отзыв',
                         balloonContent: mark.text
                     },
                     {

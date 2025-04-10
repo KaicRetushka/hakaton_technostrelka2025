@@ -46,3 +46,119 @@ body {
     text-transform: none;
     color: #000000;
 }
+
+#form_enter{
+    font-family: 'HalvarBreitt2', sans-serif;
+    font-weight: 800;
+    font-style: normal;
+}
+
+#registration_form{
+    font-family: 'HalvarBreitt2', sans-serif;
+    font-weight: 800;
+    font-style: normal;
+}
+
+#form_enter .input{
+    font-family: 'Rooftop', sans-serif;
+    font-size: 18px;
+}
+
+#registration_form .input{
+    font-family: 'Rooftop', sans-serif;
+    font-size: 18px;
+}
+
+.input label{
+    font-family: 'HalvarBreitt2', sans-serif;
+    font-weight: 800;
+    font-style: normal;
+}
+
+#submit_reg{
+    font-family: 'HalvarBreitt2', sans-serif;
+    font-weight: 800;
+    font-style: normal;
+    font-size: 20px;
+}
+
+#enter_submit{
+    font-family: 'HalvarBreitt2', sans-serif;
+    font-weight: 800;
+    font-style: normal;
+    font-size: 20px;
+}
+
+#change_form{
+    font-family: 'HalvarBreitt2', sans-serif;
+    font-weight: 800;
+    font-style: normal;
+    font-size: 20px;
+}
+
+#change_pw_form{
+    font-family: 'HalvarBreitt2', sans-serif;
+    font-weight: 800;
+    font-style: normal;
+    font-size: 20px;
+}
+
+#input_old_pw {
+    font-family: 'Rooftop', sans-serif;
+    font-size: 18px;
+}
+
+#input_new_pw_1 {
+    font-family: 'Rooftop', sans-serif;
+    font-size: 18px;
+}
+
+#input_new_pw_2 {
+    font-family: 'Rooftop', sans-serif;
+    font-size: 18px;
+}
+
+#btn_check_pw {
+    font-family: 'HalvarBreitt2', sans-serif;
+    font-weight: 800;
+    font-style: normal;
+    font-size: 20px;
+}
+
+#change_cancel {
+    font-family: 'HalvarBreitt2', sans-serif;
+    font-weight: 800;
+    font-style: normal;
+    font-size: 20px;
+}
+
+#change_submit {
+    font-family: 'HalvarBreitt2', sans-serif;
+    font-weight: 800;
+    font-style: normal;
+    font-size: 20px;
+}
+
+#add_review_cancel {
+    font-family: 'HalvarBreitt2', sans-serif;
+    font-weight: 800;
+    font-style: normal;
+    font-size: 20px;
+}
+
+#add_review_save {
+    font-family: 'HalvarBreitt2', sans-serif;
+    font-weight: 800;
+    font-style: normal;
+    font-size: 20px;
+}
+
+#name_mark_input{
+    font-family: 'Rooftop', sans-serif;
+    font-size: 18px;
+}
+
+#description_mark_input{
+    font-family: 'Rooftop', sans-serif;
+    font-size: 18px;
+}

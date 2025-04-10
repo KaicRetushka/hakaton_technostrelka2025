@@ -207,3 +207,13 @@ form * {
         width: 100%;
     }
 }
+
+.password-link-marsh{
+    text-decoration: none;
+}
+
+.password-link-marsh:hover{
+    text-decoration: underline;
+    text-decoration-color: #ffffff;
+    text-decoration-thickness: 2px;
+}

@@ -19,6 +19,7 @@ body {
   background-color: var(--background-color);
   color: var(--text-color);
   min-height: 100vh;
+  overflow: hidden;
 }
 
 /* Навигационная панель */
@@ -240,6 +241,10 @@ body {
   color: white;
   width: 90%;
   max-width: 500px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 #add_mark_dialog h1 {
@@ -756,7 +761,7 @@ body {
   left: 14px;
   bottom: 0;
   padding: 10px 15px;
-  width: 350px;
+  width: 380px;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
   background-color: rgba(255, 255, 255, 0.9);
@@ -974,4 +979,8 @@ body {
   #add_review_dialog button {
     width: 100%;
   }
+}
+
+#not_galary{
+  max-height: 120px;
 }

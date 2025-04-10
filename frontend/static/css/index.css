@@ -984,3 +984,7 @@ body {
 #not_galary{
   max-height: 120px;
 }
+
+#button_glav_exit:hover{
+  background-color: #2ecc71;
+}

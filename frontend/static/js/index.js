@@ -25,6 +25,7 @@ let btnAddReviewSave = document.querySelector('#add_review_save')
 
 
 
+
 exit_neiro.addEventListener("click", () => {
     document.getElementById("ws_dialog").close()
 })
@@ -36,10 +37,19 @@ const checkbox4G = document.getElementById('4_G_check');
 const checkbox3G = document.getElementById('3_G_check');
 const checkbox2G = document.getElementById('2_G_check');
 
+
+checkbox4G.checked = false
+checkbox3G.checked = false
+checkbox2G.checked = false
+showMarkCheckbox.checked = false
+showReviewCheckbox.checked = false
+
 // Создаём переменные, которые будут хранить текущее состояние
 let is4GChecked = checkbox4G.checked;
 let is3GChecked = checkbox3G.checked;
 let is2GChecked = checkbox2G.checked;
+
+
 
 // Добавляем обработчики событий для обновления переменных
 checkbox4G.addEventListener('change', function() {
@@ -200,6 +210,9 @@ ymaps.ready(async function () {
             
             btnAddMark.textContent = isAddingMark ? "Отменить" : "Добавить метку";
             btnAddZone.textContent = "Добавить зону";
+            nameMark.value = ''
+            descriptionMark.value = ''
+            gallery.innerHTML = ''
         });
     }
 
@@ -291,7 +304,8 @@ ymaps.ready(async function () {
                         hintContent: nameMark.value
                     },
                     {
-                        preset: "islands#blackDotIcon"
+                        preset: "islands#blackDotIcon",
+                        iconColor: '#000000' 
                     }
                 );
 
@@ -300,13 +314,12 @@ ymaps.ready(async function () {
 
                 addMark(title, coords, description);
 
-                myMap.geoObjects.add(placemark);
                 console.log(`Добавлена метка: ${nameMark.value} (${coords})`);
 
                 // Сбрасываем форму
                 nameMark.value = '';
                 descriptionMark.value = '';
-                photoMark.value = '';
+                gallery.innerHTML = '';
                 isAddingMark = false;
                 btnAddMark.textContent = "Добавить метку";
                 dialogAddMark.close();
@@ -329,7 +342,7 @@ ymaps.ready(async function () {
                     alert('Введите текст отзыва');
                     return;
                 }
-                
+    
                 // Создаем метку с отзывом
                 const placemark = new ymaps.Placemark(
                     coords,
@@ -434,12 +447,7 @@ ymaps.ready(async function () {
                 const placemark = new ymaps.Placemark(
                     [mark.x_coor, mark.y_coor],
                     {
-                        hintContent: mark.title || 'Салон связи',
-                        balloonContent: `
-                            <b>${mark.title || 'Салон связи'}</b><br>
-                            ${mark.description || ''}
-                            ${mark.photos ? mark.photos.map(photo => 
-                                `<img src="${photo.url}" width="100">`).join('') : ''}`
+                        hintContent: '<div style="text-transform: none;">Салон связи</div>'
                     },
                     {
                         preset: "islands#blackDotIcon", // Специальная иконка для салонов
@@ -526,14 +534,30 @@ ymaps.ready(async function () {
 
 
             if (!Array.isArray(marks)) throw new Error('Ожидался массив меток');
-         
+
+
             // Создаем и сохраняем новые метки
             reviewPlacemarks = marks.map(mark => {
+
+                // Получаем данные автора (предполагая, что у вас есть эта информация)
+                const authorName = mark.cretor; // Или из другого источника
+                    
+                const description_text = mark.text
+
+
+                // Форматируем содержимое балуна
+                const balloonContent = `
+                    <div style="padding: 10px; text-transform: none;">
+                        <div style="font-style: italic; font-size: 10px; margin-bottom: 5px;">Автор: ${authorName}</div>
+                        <div style="text-transform: none;">${description_text}</div>
+                    </div>
+                `;
+
                 const placemark = new ymaps.Placemark(
                     [mark.x_coor, mark.y_coor],
                     {
-                        hintContent: 'Отзыв',
-                        balloonContent: mark.text
+                        hintContent: '<div style="text-transform: none;">Отзыв</div>',
+                        balloonContent: balloonContent
                     },
                     {
                         preset: "islands#greenDotIcon", 
@@ -638,7 +662,7 @@ async function check4G(is4GChecked) {
 
                 let polygon = new ymaps.Polygon(
                     [item.arr_coor]
-                , { hintContent: "Многоугольник" }, {
+                , { hintContent: "Зона покрытия 4G" }, {
                     fillColor: '#F3B38680',
                     interactivityModel: 'default#transparent',
                     strokeWidth: 0,
@@ -730,7 +754,7 @@ async function check3G(is3GChecked) {
 
                 let polygon = new ymaps.Polygon(
                     [item.arr_coor]
-                , { hintContent: "Многоугольник" }, {
+                , { hintContent: "Зона покрытия 3G" }, {
                     fillColor: '#EF87C980',
                     interactivityModel: 'default#transparent',
                     strokeWidth: 0,
@@ -819,7 +843,7 @@ async function check2G(is2GChecked) {
 
                 let polygon = new ymaps.Polygon(
                     [item.arr_coor]
-                , { hintContent: "Многоугольник" }, {
+                , { hintContent: "Зона покрытия 2G" }, {
                     fillColor: '#986BA380',
                     interactivityModel: 'default#transparent',
                     strokeWidth: 0,

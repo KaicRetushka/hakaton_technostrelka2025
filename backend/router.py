@@ -23,7 +23,7 @@ async def registration(response: Response, body: BodyRegistration = Form(...)):
         response.set_cookie(config.JWT_ACCESS_COOKIE_NAME, token)
         response.headers["hx-redirect"] = "/"
         return {"token": token}
-    return HTMLResponse("<script>alert('Такой логин уже занят')</script>")
+    return HTMLResponse("<script>alert('Такой номер телефона уже занят')</script>")
 
 @router.post("/enter", tags=["Вход"])
 async def enter(response: Response, body: BodyEnter = Form(...)) -> ReturnAccessToken:
@@ -36,7 +36,7 @@ async def enter(response: Response, body: BodyEnter = Form(...)) -> ReturnAccess
         response.set_cookie(config.JWT_ACCESS_COOKIE_NAME, token)
         response.headers["hx-redirect"] = "/"
         return {"access_token": token}
-    return HTMLResponse("<script>alert('Неверный логин или пароль')</script>")
+    return HTMLResponse("<script>alert('Неверный номер телефона или пароль')</script>")
 
 @router.delete("/exit", tags=["Выход из аккаунта"])
 async def exit(response: Response) -> ReturnDetail:
@@ -65,13 +65,13 @@ async def get_metki() -> List[IndexMetka]:
     return metki_arr
 
 @router.post("/user/login_name_surname_avatar", dependencies=[Depends(security.access_token_required)],
-             tags=["Изменение логина, имени, фамилию и аватарки"])
+             tags=["Изменение логина(номера телефона), имени, фамилию и аватарки"])
 async def login_name_surname(request: Request, login: str = Form(...), name: str = Form(...), surname: str = Form(...),
                              avatar: UploadFile = File(None)) -> ReturnDetail:
     token = request.cookies.get(config.JWT_ACCESS_COOKIE_NAME)
     data_login = update_login(security._decode_token(token).sub, login)
     if not(data_login):
-        raise HTTPException(status_code=409, detail="Такой логин уже занят")
+        raise HTTPException(status_code=409, detail="Такой номер телефона уже занят")
     update_name(security._decode_token(token).sub, name)
     update_surname(security._decode_token(token).sub, surname)
     if avatar:

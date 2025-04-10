@@ -46,7 +46,8 @@ ymaps.ready(function () {
             hintContent: title_orig
         },
         {
-            preset: "islands#blackDotIcon"
+            preset: "islands#blackDotIcon",
+            iconColor: '#000000' 
         }
     )  
 
@@ -69,8 +70,13 @@ ymaps.ready(function () {
                 myMap.geoObjects.removeAll();
                 const placemark = new ymaps.Placemark(
                     coords,
-                    { hintContent: title },
-                    { preset: "islands#blackDotIcon" }
+                    { 
+                        hintContent: title 
+                    },
+                    { 
+                        preset: "islands#blackDotIcon",
+                        iconColor: '#000000' 
+                    }
                 );
                 myMap.geoObjects.add(placemark);
             };
@@ -98,7 +104,8 @@ ymaps.ready(function () {
                 hintContent: title_orig
             },
             {
-                preset: "islands#blackDotIcon"
+                preset: "islands#blackDotIcon",
+                iconColor: '#000000' 
             }
         )  
 
